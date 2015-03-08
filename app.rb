@@ -3,5 +3,5 @@ require 'sinatra/activerecord'
 require './config/environments'
 
 get '/' do
-  "hello world"
+  erb :profile
 end
