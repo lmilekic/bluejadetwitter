@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+
+<h1> Welcome to BlueJade </h1>
+
+<head>
+	<style>
+	table, th, td {
+		border: 1px solid black;
+	}
+</style>
+</head>
+
+<body>
+
+<div id="header">
+  <div id="search-bar" align="right">
+  	<input type="text" name="search-terms" />
+    <button type="button" onclick="alert('This button submits a query for searching!')">Search</button>
+</div>
+  </div>
+</div>
+
+<div id="public-feed">
+	<table>
+		<tr>
+			<th>Public Tweet Feed</th>
+		</tr>
+		<tr>
+			<td>Tweet1</td>
+		</tr>
+		<tr>
+			<td>Tweet2</td>
+		</tr>
+		<tr>
+			<td>Tweet3</td>
+		</tr>
+		<tr>
+			<td>Tweet4</td>
+		</tr>
+		<tr>
+			<td>Tweet5</td>
+		</tr>
+		<tr>
+			<td>Tweet6</td>
+		</tr>
+		<tr>
+			<td>Tweet7</td>
+		</tr>
+		<tr>
+			<td>Tweet8,000</td>
+		</tr>
+		<tr>
+			<td>Tweet...n</td>
+		</tr>
+	</table>
+</div>
+
+<br>
+<br>
+<br>
+
+<div id="sign-up">
+	<p> Sign Up! </p>
+	<div>
+	Name: <input type="text" name="name" />
+	</div>
+	<div>
+	Email: <input type="text" name="email" />
+	</div>
+	<div>
+	Password: <input type="text" name="password" />
+	</div>
+	<div>
+	Re-enter Password:<input type="text" name="password-repeat" />
+	</div>
+
+	<a href="/homepage"><button type="button" onclick="alert('This button will create and set up a user, and log the user in automatically')">Sign Up!</button></a>
+</div>
+
+<br>
+<br>
+<br>
+
+<div id="login">
+	<p> Log in already! </p>
+	<div>
+	Email: <input type="text" name="email" />
+	</div>
+	<div>
+	Password: <input type="text" name="password" />
+	</div>
+	<a href="/homepage"><button type="button" onclick="alert('This button logs the user in.')">Login</button></a>
+</div>
+
+</body>
+
+</html>
