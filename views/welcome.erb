@@ -62,21 +62,19 @@
 <br>
 
 <div id="sign-up">
-	<p> Sign Up! </p>
-	<div>
-	Name: <input type="text" name="name" />
-	</div>
-	<div>
-	Email: <input type="text" name="email" />
-	</div>
-	<div>
-	Password: <input type="text" name="password" />
-	</div>
-	<div>
-	Re-enter Password:<input type="text" name="password-repeat" />
-	</div>
-
-	<a href="/homepage"><button type="button" onclick="alert('This button will create and set up a user, and log the user in automatically')">Sign Up!</button></a>
+	<form action="/signup" method="POST">
+		<p> Sign Up! </p>
+		<div>
+		Username: <input type="text" name="username" />
+		</div>
+		<div>
+		Email: <input type="text" name="email" />
+		</div>
+		<div>
+		Password: <input type="text" name="password" />
+		</div>
+		<input type="submit" value="Sign up!" />
+	</form>
 </div>
 
 <br>
