@@ -62,38 +62,30 @@
     
   </div>
   <div class="push-right">
-  <table>
- 	<tr>
-        <table>
-            <tr><td><b>Luka</b> <i>luka_warm</i> - timestamp</td></tr>
-            <tr><td>colors are temporary</td></tr>
-        </table>
-    </tr>
- 	<tr>
-        <table>
-            <tr><td><b>Luka</b> <i>luka_warm</i> - timestamp</td></tr>
-            <tr><td>one day i think i will become a unicorn. this is my life goal #dreams</td></tr>
-        </table>
-    </tr>
- 	<tr>
-        <table>
-            <tr><td><b>Luka</b> <i>luka_warm</i> - timestamp</td></tr>
-            <tr><td>will i ever manage to become the one true hokage</td></tr>
-        </table>
-    </tr>
- 	<tr>
-        <table>
-            <tr><td><b>Luka</b> <i>luka_warm</i> - timestamp</td></tr>
-            <tr><td>#whydomyarmslooklikespaghetti #momsspaghetti #kneesweak</td></tr>
-        </table>
-    </tr>
- 	<tr>
-        <table>
-            <tr><td><b>Luka</b> <i>luka_warm</i> - timestamp</td></tr>
-            <tr><td>monday tuesday wednesday thursday friday saturday sunday #week</td></tr>
-        </table>
-    </tr>
-  </table>
+
+    <div>
+      <form action="/api/v1/tweet" method="POST">
+        <input type="text" name="tweet_text" />
+        <input type="submit" value="tweet!">
+      </form>
+    </div>
+
+
+
+    <div>
+      <table>
+
+        <% @userTweets.each do |t| %>
+        <tr>
+            <table>
+                <tr><td><b> <%= t.reference %> </b> <i>luka_warm</i> - <%= t.created_at.strftime("%a %e, %l:%M%P") %></td></tr>
+                <tr><td><%= t.text %></td></tr>
+            </table>
+        </tr>
+        <% end %>
+
+      </table>
+    </div>
   </div>
 </div>
 
