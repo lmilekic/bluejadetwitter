@@ -11,7 +11,7 @@ end
 
 post '/api/v1/signup' do
 	user = User.create(:username => params[:username],
-						 #:email => params[:email],
+						 :email => params[:email],
 						 :password => params[:password] )
 	if user.save
 		redirect '/profile'
@@ -32,6 +32,12 @@ post '/api/v1/tweet' do
 	else
 		"unable to tweet"
 	end
+end
+
+get '/api/v1/tweet/:tid' do
+	tweet = Tweet.find(params[:tid]).text
+	puts "#{tweet}"
+	"#{tweet}"
 end
 
 get '/profile' do
