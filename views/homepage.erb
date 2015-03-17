@@ -78,7 +78,7 @@
         <% @userTweets.each do |t| %>
         <tr>
             <table>
-                <tr><td><b> <%= t.reference %> </b> <i>luka_warm</i> - <%= t.created_at.strftime("%a %e, %l:%M%P") %></td></tr>
+                <tr><td><b> <%= t.user_id %> </b> <i>luka_warm</i> - <%= t.created_at.strftime("%a %e, %l:%M%P") %></td></tr>
                 <tr><td><%= t.text %></td></tr>
             </table>
         </tr>

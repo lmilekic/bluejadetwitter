@@ -22,7 +22,7 @@ end
 
 post '/api/v1/tweet' do
 	tweet = Tweet.create(:text => params[:tweet_text],
-							:reference => 1, #temporarily for now, use userid 1
+							:user_id => 1, #temporarily for now, use userid 1
 							# later on it shoudl be something like:
 							# :reference => session[:userid]
 							# or something
@@ -40,7 +40,7 @@ end
 
 get '/homepage' do
 
-	@userTweets = Tweet.where(reference: 1).to_a
+	@userTweets = Tweet.where(user_id: 1).to_a
 
 	erb :homepage
 end
