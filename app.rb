@@ -5,8 +5,8 @@ require_relative 'models/user'
 require_relative 'models/tweet'
 
 get '/' do
+  # if user is signed in then erg :homepage else erb :welcome
   erb :welcome
-  # if user is signed in redirect to /homepage?
 end
 
 post '/api/v1/signup' do
@@ -23,6 +23,9 @@ end
 post '/api/v1/tweet' do
 	tweet = Tweet.create(:text => params[:tweet_text],
 							:reference => 1, #temporarily for now, use userid 1
+							# later on it shoudl be something like:
+							# :reference => session[:userid]
+							# or something
 							:created_at => Time.now)
 	if tweet.save
 		redirect back #refreshes
@@ -37,10 +40,7 @@ end
 
 get '/homepage' do
 
-	# in here:
-	# fetch all tweets by userid
-	# put in to an array, pass into the erb file
-	#in the erb file we loop thru and display~
+	@userTweets = Tweet.where(reference: 1).to_a
 
 	erb :homepage
 end
