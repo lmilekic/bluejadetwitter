@@ -64,8 +64,10 @@
   <div class="push-right">
 
     <div>
-      <input type="text" name="tweet" />
-      <button type="button" onclick="alert('This submits the tweet!')">tweet</button>
+      <form action="/api/v1/tweet" method="POST">
+        <input type="text" name="tweet_text" />
+        <input type="submit" value="tweet!">
+      </form>
     </div>
 
 
