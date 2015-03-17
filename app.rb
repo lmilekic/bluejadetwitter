@@ -9,7 +9,8 @@ enable :sessions
 get '/' do
   # if user is signed in then erg :homepage else erb :welcome
   if(current_user)
-    erb :homepage
+    @userTweets = []
+    erb :homepage #This needs @userTweets to be defined
   else
     erb :welcome
   end
