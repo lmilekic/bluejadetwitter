@@ -5,9 +5,20 @@ require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
 
+enable :sessions
+before do
+  puts "id is " + session[:id].to_s
+end
+
 get '/' do
   # if user is signed in then erg :homepage else erb :welcome
-  erb :welcome
+  if(current_user)
+    redirect to('/homepage')
+    #@userTweets = []
+    #erb :homepage #This needs @userTweets to be defined
+  else
+    erb :welcome
+  end
 end
 
 post '/api/v1/signup' do
@@ -15,19 +26,30 @@ post '/api/v1/signup' do
 						 :email => params[:email],
 						 :password => params[:password] )
 	if user.save
+    session[:id] = user.id
 		redirect '/profile'
 	else
 		"Sorry, there was an error!"
 	end
 end
 
+post '/api/v1/login' do
+  user = User.where(:email => params[:email], :password => params[:password]).first
+  if(user)
+    session[:id] = user.id
+    redirect to('/profile')
+  else
+    "there was an error"
+  end
+end
+
 post '/api/v1/tweet' do
 	tweet = Tweet.create(:text => params[:tweet_text],
-							:user_id => 1, #temporarily for now, use userid 1
+							:user_id => session[:id], #temporarily for now, use userid 1
 							# later on it shoudl be something like:
 							# :reference => session[:userid]
 							# or something
-							:created_at => Time.now)
+							:created_at => Time.now) #I think created_at is auto_generated
 	if tweet.save
 		redirect back #refreshes
 	else
@@ -72,12 +94,29 @@ post '/api/v1/unfollow' do
 end
 
 get '/profile' do
-  erb :profile
+  if(current_user)
+    erb :profile
+  else
+    redirect to('/')
+  end
 end
 
 get '/homepage' do
 
-	@userTweets = Tweet.where(user_id: 1).to_a
+	@userTweets = Tweet.where(user_id: session[:id]).to_a
 
 	erb :homepage
+end
+
+get '/logout' do
+  session[:id] = nil
+  redirect to('/')
+end
+private
+def current_user
+  if(session[:id].nil?)
+    false
+  else
+    User.where(:id => session[:id])
+  end
 end
