@@ -8,8 +8,18 @@ table, th, td {
 </style>
 </head>
 <body>
-	<button type="button" onclick="alert('This button will have a couple of functions.  If you are not following this user, it will be a button to follow the user.  If you are following the user, it will be a button to unfollow. If you are looking at your own page, this button will not exist.  It will also not exist if you are looking at this page while not logged in.')">Follow/Unfollow</button>
-	<button type="button" onclick="alert('This will be a search bar to be able to search for a tweet or something else within our database.  Ideally, it will be on the top right of the screen, but as this is very basic and we are not using a style sheet it is here for now.')">Search</button>
+	<% if(User.find(1).followed_users.include?(User.find(2))) %>
+	<form action="/api/v1/unfollow" accept-charset="UTF-8" method="post">
+		<input type="submit" name="toggle-follow" value="Unfollow!" />
+	</form>
+	<% else %> 
+		<form action="/api/v1/follow" accept-charset="UTF-8" method="post">
+		<input type="submit" name="toggle-follow" value="Follow!" />
+	</form>
+	<% end %>
+
+	<button type="submit" id = "toggle_search" onclick="console.log('This will be a search bar to be able to search for a tweet or something else within our database.  Ideally, it will be on the top right of the screen, but as this is very basic and we are not using a style sheet it is here for now.')">Search</button>
+
 	<br></br>
 	<img src="Luka.jpg" alt="Luka face" width="180" height="240">
 	<h1>Luka's Profile!</h1>
