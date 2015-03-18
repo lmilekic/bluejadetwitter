@@ -3,6 +3,7 @@ require 'sinatra/activerecord'
 require './config/environments'
 require_relative 'models/user'
 require_relative 'models/tweet'
+require_relative 'models/user_following_user'
 
 get '/' do
   # if user is signed in then erg :homepage else erb :welcome
@@ -34,10 +35,40 @@ post '/api/v1/tweet' do
 	end
 end
 
-get '/api/v1/tweet/:tid' do
-	tweet = Tweet.find(params[:tid]).text
-	puts "#{tweet}"
-	"#{tweet}"
+#BELOW is close to what we want to have this post request doing later, but it currently relies on too many other things
+
+# post '/api/v1/follow/:id' do
+# 	#TO FIX LATER -- THIS CURRENTLY RECREATES THIS SAME FOLLOWING CONNECTION OVER AND OVER
+# 	#ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
+#  	stalk = UserFollowingUser.create(:user_id => session[:id],
+#  										:followed_user_id => params[:id])
+#  	if stalk.save
+#  		redirect back 
+#  	else
+#  		"IT DIDN'T WORK"
+#  	end
+# end
+
+post '/api/v1/follow' do
+	#TO FIX LATER -- THIS CURRENTLY RECREATES THIS SAME FOLLOWING CONNECTION OVER AND OVER
+	#ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
+ 	stalk = UserFollowingUser.create(:user_id => 1,
+ 										:followed_user_id => 2)
+ 	if stalk.save
+ 		redirect back
+
+ 	else
+ 		"IT DIDN'T WORK"
+ 	end
+end
+
+post '/api/v1/unfollow' do
+	#TO FIX LATER -- THIS CURRENTLY DELETES THIS SAME FOLLOWING CONNECTION OVER AND OVER
+	#ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
+ 	
+ 	User.find(1).user_following_users.destroy_all
+
+ 	redirect back
 end
 
 get '/profile' do
