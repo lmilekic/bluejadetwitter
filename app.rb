@@ -5,12 +5,16 @@ require_relative 'models/user'
 require_relative 'models/tweet'
 
 enable :sessions
+before do
+  puts "id is " + session[:id].to_s
+end
 
 get '/' do
   # if user is signed in then erg :homepage else erb :welcome
   if(current_user)
-    @userTweets = []
-    erb :homepage #This needs @userTweets to be defined
+    redirect to('/homepage')
+    #@userTweets = []
+    #erb :homepage #This needs @userTweets to be defined
   else
     erb :welcome
   end
@@ -18,7 +22,7 @@ end
 
 post '/api/v1/signup' do
 	user = User.create(:username => params[:username],
-						 #:email => params[:email],
+						 :email => params[:email],
 						 :password => params[:password] )
 	if user.save
     session[:id] = user.id
@@ -29,8 +33,13 @@ post '/api/v1/signup' do
 end
 
 post '/api/v1/login' do
-  user = User.where(:username => params[:username], :password => params[:password])
-  session[:id] = user.id
+  user = User.where(:email => params[:email], :password => params[:password]).first
+  if(user)
+    session[:id] = user.id
+    redirect to('/profile')
+  else
+    "there was an error"
+  end
 end
 
 post '/api/v1/tweet' do
@@ -57,11 +66,15 @@ end
 
 get '/homepage' do
 
-	@userTweets = Tweet.where(user_id: 1).to_a
+	@userTweets = Tweet.where(user_id: session[:id]).to_a
 
 	erb :homepage
 end
 
+get '/logout' do
+  session[:id] = nil
+  redirect to('/')
+end
 private
 def current_user
   if(session[:id].nil?)

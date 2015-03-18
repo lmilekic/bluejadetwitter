@@ -10,6 +10,7 @@
 		border: 1px solid black;
 	}
 </style>
+
 </head>
 
 <body>
@@ -71,7 +72,7 @@
 		Email: <input type="text" name="email" />
 		</div>
 		<div>
-		Password: <input type="text" name="password" />
+		Password: <input type="password" name="password" />
 		</div>
 		<input type="submit" value="Sign up!" />
 	</form>
@@ -84,12 +85,13 @@
 <div id="login">
 	<p> Log in already! </p>
 	<div>
-	Email: <input type="text" name="email" />
+		<form action="/api/v1/login" method="POST">
+			Email: <input type="text" name="email" />
+			Password: <input type="password" name="password"/>
+		</br>
+		<input type="submit" value="Submit">
+		</form>
 	</div>
-	<div>
-	Password: <input type="text" name="password" />
-	</div>
-	<a href="/homepage"><button type="button" onclick="alert('This button logs the user in.')">Login</button></a>
 </div>
 
 </body>
