@@ -10,6 +10,15 @@ table, th, td {
 <body>
 	<button type="button" onclick="alert('This button will have a couple of functions.  If you are not following this user, it will be a button to follow the user.  If you are following the user, it will be a button to unfollow. If you are looking at your own page, this button will not exist.  It will also not exist if you are looking at this page while not logged in.')">Follow/Unfollow</button>
 
+    <% if @self == true %>
+        <div>
+          <form action="/api/v1/tweet" method="POST">
+            <input type="text" name="tweet_text" />
+            <input type="submit" value="tweet!">
+          </form>
+        </div>
+    <% end %>
+
 	<br></br>
 	<h1><%= @username %></h1>
 	<div>
