@@ -39,7 +39,7 @@ post '/api/v1/login' do
   user = User.where(:email => params[:email], :password => params[:password]).first
   if(user)
     session[:id] = user.id
-    redirect to('/profile')
+    redirect to('/profile/' + user.username)
   else
     "there was an error"
   end
@@ -103,6 +103,7 @@ end
 
 get '/homepage' do
 
+	# THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
 	@userTweets = Tweet.where(user_id: session[:id]).to_a
 
 	erb :homepage
