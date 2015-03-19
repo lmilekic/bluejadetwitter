@@ -2,7 +2,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require './config/environments'
 require_relative 'models/user'
-require_relative 'models/tweet'
+require_relative 'models/tweet' 
 
 enable :sessions
 
