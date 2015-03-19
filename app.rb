@@ -17,6 +17,7 @@ get '/' do
     #@userTweets = []
     #erb :homepage #This needs @userTweets to be defined
   else
+  	@publicFeed = Tweet.all.to_a
     erb :welcome
   end
 end
@@ -46,7 +47,7 @@ end
 
 post '/api/v1/tweet' do
 	tweet = Tweet.create(:text => params[:tweet_text],
-							:user_id => session[:user_id], 
+							:user_id => session[:id], 
 							:created_at => Time.now) #I think created_at is auto_generated
 	if tweet.save
 		redirect back #refreshes
@@ -95,8 +96,9 @@ get '/profile/:user' do
   user = User.where(username: params[:user])
   user_id = user[0].id
   @username = params[:user]
-  @profileFeed = Tweet.where(user_id: user_id)
+  @profileFeed = Tweet.where(user_id: user_id).to_a
   if @username === session[:username] then @self = true else @self = false end
+  erb :profile
 end
 
 get '/homepage' do
