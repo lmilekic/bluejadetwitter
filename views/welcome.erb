@@ -24,39 +24,19 @@
   </div>
 </div>
 
-<div id="public-feed">
-	<table>
-		<tr>
-			<th>Public Tweet Feed</th>
-		</tr>
-		<tr>
-			<td>Tweet1</td>
-		</tr>
-		<tr>
-			<td>Tweet2</td>
-		</tr>
-		<tr>
-			<td>Tweet3</td>
-		</tr>
-		<tr>
-			<td>Tweet4</td>
-		</tr>
-		<tr>
-			<td>Tweet5</td>
-		</tr>
-		<tr>
-			<td>Tweet6</td>
-		</tr>
-		<tr>
-			<td>Tweet7</td>
-		</tr>
-		<tr>
-			<td>Tweet8,000</td>
-		</tr>
-		<tr>
-			<td>Tweet...n</td>
-		</tr>
-	</table>
+<div>
+  <table>
+  	<tr>Public Feed</tr>
+    <% @publicFeed.each do |t| %>
+    <tr>
+        <table>
+            <tr><td><b> <%= t.user_id %> </b> <i>luka_warm</i> - <%= t.created_at.strftime("%a %e, %l:%M%P") %></td></tr>
+            <tr><td><%= t.text %></td></tr>
+        </table>
+    </tr>
+    <% end %>
+
+  </table>
 </div>
 
 <br>
