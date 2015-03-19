@@ -17,6 +17,7 @@ get '/' do
     #@userTweets = []
     #erb :homepage #This needs @userTweets to be defined
   else
+    @publicFeed = Tweet.all.to_a
     erb :welcome
   end
 end
@@ -27,7 +28,7 @@ post '/api/v1/signup' do
 						 :password => params[:password] )
 	if user.save
     session[:id] = user.id
-		redirect '/profile'
+		redirect "/profile/#{user.username}"
 	else
 		"Sorry, there was an error!"
 	end
@@ -37,7 +38,7 @@ post '/api/v1/login' do
   user = User.where(:email => params[:email], :password => params[:password]).first
   if(user)
     session[:id] = user.id
-    redirect to('/profile')
+    redirect to('/')
   else
     "there was an error"
   end
@@ -98,6 +99,7 @@ get '/profile/:user' do
   user_id = user[0].id
   @username = params[:user]
   @profileFeed = Tweet.where(user_id: user_id)
+  erb :profile
 end
 
 get '/homepage' do
