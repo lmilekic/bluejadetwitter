@@ -29,7 +29,7 @@ post '/api/v1/signup' do
 	if user.save
     	session[:id] = user.id
     	session[:username] = user.username
-		redirect '/profile' + user.username
+		redirect '/profile/' + user.username
 	else
 		"Sorry, there was an error!"
 	end
@@ -40,7 +40,7 @@ post '/api/v1/login' do
   if(user)
     session[:id] = user.id
     session[:username] = user.username
-    redirect '/profile/' + user.username
+    redirect '/homepage'
   else
     "there was an error"
   end
@@ -94,7 +94,11 @@ post '/api/v1/unfollow' do
 end
 
 get '/profile' do
-  if session[:username] != nil then redirect '/profile/' + session[:usename] else redirect '/' end
+  if session[:username] != nil
+    redirect '/profile/' + session[:username]
+  else
+    redirect '/'
+  end
 end
 
 get '/profile/:user' do
@@ -102,7 +106,8 @@ get '/profile/:user' do
   user_id = user[0].id
   @username = params[:user]
   @profileFeed = Tweet.where(user_id: user_id).to_a
-  if @username === session[:username] then @self = true else @self = false end
+  @self = false
+  if @username === session[:username] then @self = true end
   erb :profile
 end
 
