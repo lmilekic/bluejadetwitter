@@ -55,7 +55,7 @@
 <div id="main-container">
 
   <div class="push-left">
-    <h1><img src="Luka.jpg" height=50px width=50px/> name</h1>
+    <h1><img src="Luka.jpg" height=50px width=50px/> <%= session[:username] %> </h1>
     info<br />
     follower-count<br />
     <a href="/profile">profile link?</a><br />
@@ -77,8 +77,14 @@
         <% @userTweets.each do |t| %>
         <tr>
             <table>
-                <tr><td><b> <%= t.user_id %> </b> <i>luka_warm</i> - <%= t.created_at.strftime("%a %e, %l:%M%P") %></td></tr>
-                <tr><td><%= t.text %></td></tr>
+                <tr><td>
+                  <b> User's Name </b> 
+                  @<%= session[:username] %> - 
+                  <i><%= t.created_at.strftime("%a %e, %l:%M%P") %></i>
+                </td></tr>
+                <tr><td>
+                  <%= t.text %>
+                </td></tr>
             </table>
         </tr>
         <% end %>
