@@ -17,6 +17,19 @@ table, th, td {
 		<input type="submit" name="toggle-follow" value="Follow!" />
 	</form>
 	<% end %>	<br></br>
+
+
+    <% if @self == true %>
+        <div>
+          <form action="/api/v1/tweet" method="POST">
+            <input type="text" name="tweet_text" />
+            <input type="submit" value="tweet!">
+          </form>
+        </div>
+    <% end %>
+
+    <br><Br>
+
 	<h1><%= @username %></h1>
 	<div>
       <table>
