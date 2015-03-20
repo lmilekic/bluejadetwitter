@@ -4,7 +4,6 @@ class CreateTweets < ActiveRecord::Migration
   		t.string :text
   		t.integer :user_id
   		t.datetime :created_at
-
   		t.timestamps null: false
   	end
   end
