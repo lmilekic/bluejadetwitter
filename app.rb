@@ -29,7 +29,7 @@ post '/api/v1/signup' do
 	if user.save
     	session[:id] = user.id
     	session[:username] = user.username
-		redirect '/profile'
+		redirect '/profile' + user.username
 	else
 		"Sorry, there was an error!"
 	end
@@ -39,7 +39,8 @@ post '/api/v1/login' do
   user = User.where(:email => params[:email], :password => params[:password]).first
   if(user)
     session[:id] = user.id
-    redirect to('/profile/' + user.username)
+    session[:username] = user.username
+    redirect '/profile/' + user.username
   else
     "there was an error"
   end
@@ -90,6 +91,10 @@ post '/api/v1/unfollow' do
  	User.find(1).user_following_users.destroy_all
 
  	redirect back
+end
+
+get '/profile' do
+  if session[:username] != nil then redirect '/profile/' + session[:usename] else redirect '/' end
 end
 
 get '/profile/:user' do
