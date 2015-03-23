@@ -4,3 +4,4 @@ gem 'sqlite3'
 gem 'sinatra-activerecord'
 gem "minitest"
 gem 'rspec'
+gem 'rack-test'
