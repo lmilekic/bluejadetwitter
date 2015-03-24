@@ -4,10 +4,10 @@ require 'erb'
 
 configure :production do
   puts "[production environment]"
-  
+
   # as per Pito's example
   env = ENV["SINATRA_ENV"] || "production"
-  databases = YAML.load(ERB.new(File.read("database.yml")).result)
+  databases = YAML.load(ERB.new(File.read("config/database.yml")).result)
   ActiveRecord::Base.establish_connection(databases[env])
 end
 
