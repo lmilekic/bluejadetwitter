@@ -1,23 +1,16 @@
-# These Settings Establish the Proper Database Connection for Heroku Postgres
-# The environment variable DATABASE_URL should be in the following format:
-#     => postgres://{user}:{password}@{host}:{port}/path
-# This is automatically configured on Heroku, you only need to worry if you also
-# want to run your app locally
+require 'sinatra'
+require 'sinatra/activerecord'
+require 'erb'
 
 configure :production do
   puts "[production environment]"
-  db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
-  ActiveRecord::Base.establish_connection(
-      :adapter => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
-      :host     => db.host,
-      :username => db.user,
-      :password => db.password,
-      :database => db.path[1..-1],
-      :encoding => 'utf8'
-  )
+  # as per Pito's example
+  env = ENV["SINATRA_ENV"] || "production"
+  databases = YAML.load(ERB.new(File.read("config/database.yml")).result)
+  ActiveRecord::Base.establish_connection(databases[env])
 end
 
 configure :development, :test do
-  puts "[develoment or test Environment]"
+  puts "[development or test environment]"
 end
