@@ -6,3 +6,11 @@ development:
 test:
   adapter: sqlite3
   database: db/test.sqlite3
+production:
+  adapter: postgresql
+  host: localhost
+  encoding: unicode
+  database: db/production
+  pool: 5
+  username: 
+  password: 
