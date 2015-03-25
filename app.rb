@@ -17,7 +17,7 @@ get '/' do
     #@userTweets = []
     #erb :homepage #This needs @userTweets to be defined
   else
-  	@publicFeed = Tweet.last(10).reverse.to_a
+  	@publicFeed = Tweet.last(100).reverse.to_a
     erb :welcome
   end
 end
