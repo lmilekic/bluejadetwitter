@@ -17,22 +17,22 @@ get '/' do
     #@userTweets = []
     #erb :homepage #This needs @userTweets to be defined
   else
-  	@publicFeed = Tweet.last(100).reverse.to_a
+    @publicFeed = Tweet.last(100).reverse.to_a
     erb :welcome
   end
 end
 
 post '/api/v1/signup' do
-	user = User.create(:username => params[:username],
-						 :email => params[:email],
-						 :password => params[:password] )
-	if user.save
-    	session[:id] = user.id
-    	session[:username] = user.username
-		redirect '/profile/' + user.username
-	else
-		"Sorry, there was an error!"
-	end
+  user = User.create(:username => params[:username],
+  :email => params[:email],
+  :password => params[:password] )
+  if user.save
+    session[:id] = user.id
+    session[:username] = user.username
+    redirect '/profile/' + user.username
+  else
+    "Sorry, there was an error!"
+  end
 end
 
 post '/api/v1/login' do
@@ -47,14 +47,14 @@ post '/api/v1/login' do
 end
 
 post '/api/v1/tweet' do
-	tweet = Tweet.create(:text => params[:tweet_text],
-							:user_id => session[:id], 
-							:created_at => Time.now) #I think created_at is auto_generated
-	if tweet.save
-		redirect back #refreshes
-	else
-		"unable to tweet"
-	end
+  tweet = Tweet.create(:text => params[:tweet_text],
+  :user_id => session[:id],
+  :created_at => Time.now) #I think created_at is auto_generated
+  if tweet.save
+    redirect back #refreshes
+  else
+    "unable to tweet"
+  end
 end
 
 #BELOW is close to what we want to have this post request doing later, but it currently relies on too many other things
@@ -72,25 +72,25 @@ end
 # end
 
 post '/api/v1/follow' do
-	#TO FIX LATER -- THIS CURRENTLY RECREATES THIS SAME FOLLOWING CONNECTION OVER AND OVER
-	#ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
- 	stalk = UserFollowingUser.create(:user_id => 1,
- 										:followed_user_id => 2)
- 	if stalk.save
- 		redirect back
+  #TO FIX LATER -- THIS CURRENTLY RECREATES THIS SAME FOLLOWING CONNECTION OVER AND OVER
+  #ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
+  stalk = UserFollowingUser.create(:user_id => 1,
+  :followed_user_id => 2)
+  if stalk.save
+    redirect back
 
- 	else
- 		"IT DIDN'T WORK"
- 	end
+  else
+    "IT DIDN'T WORK"
+  end
 end
 
 post '/api/v1/unfollow' do
-	#TO FIX LATER -- THIS CURRENTLY DELETES THIS SAME FOLLOWING CONNECTION OVER AND OVER
-	#ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
+  #TO FIX LATER -- THIS CURRENTLY DELETES THIS SAME FOLLOWING CONNECTION OVER AND OVER
+  #ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
 
- 	User.find(1).user_following_users.destroy_all
+  User.find(1).user_following_users.destroy_all
 
- 	redirect back
+  redirect back
 end
 
 get '/profile' do
@@ -103,20 +103,27 @@ end
 
 get '/profile/:user' do
   user = User.where(username: params[:user])
-  user_id = user[0].id
-  @username = params[:user]
-  @profileFeed = Tweet.where(user_id: user_id).to_a
-  @self = false
-  if @username === session[:username] then @self = true end
-  erb :profile
+  if(user.first != nil)
+    user_id = user.first.id
+    @username = params[:user]
+    @profileFeed = Tweet.where(user_id: user_id).to_a
+    @self = false
+    if @username === session[:username] then
+      @self = true
+    end
+    erb :profile
+  else
+    status 404
+    "Ooops"
+  end
 end
 
 get '/homepage' do
 
-	# THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
-	@userTweets = Tweet.where(user_id: session[:id]).to_a
+  # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
+  @userTweets = Tweet.where(user_id: session[:id]).to_a
 
-	erb :homepage
+  erb :homepage
 end
 
 get '/logout' do
