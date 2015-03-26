@@ -3,77 +3,93 @@
 
 <html>
 
-<h1> Welcome to BlueJade </h1>
-
 <head>
-	<style>
-	table, th, td {
-		border: 1px solid black;
-	}
-</style>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="Clara Nice">
+    <link rel="icon" href="../../favicon.ico">
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+	<link href="jumbotron-narrow.css" rel="stylesheet">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 </head>
 
 <body>
 
-<div id="header">
-  <div id="search-bar" align="right">
-  	<input type="text" name="search-terms" />
-    <button type="button" onclick="alert('This button submits a query for searching!')">Search</button>
-</div>
-  </div>
-</div>
+	<div class="container">
+      <div class="header clearfix">
 
-<div>
-  <table>
-  	<tr>Public Feed</tr>
-    <% @publicFeed.each do |t| %>
-    <tr>
-        <table>
-            <tr><td><b> <%= t.user_id %> </b> <i>luka_warm</i> - <%= t.created_at.strftime("%a %e, %l:%M%P") %></td></tr>
-            <tr><td><%= t.text %></td></tr>
-        </table>
-    </tr>
-    <% end %>
+      	<nav>
+      <div id="login" class="container">
+        <div class="navbar-header">
+          <h3 class="text-muted">BlueJade Twitter</h3>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          
+          <form action="/api/v1/login" method="POST" class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" name="email" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" name="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </form>
 
-  </table>
-</div>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+        
+        
+      </div>
 
-<br>
-<br>
-<br>
+      <div class="jumbotron" id="sign-up">
+        <h1>Welcome to BlueJade</h1>
+        <p class="lead">We are currently working on making this site less painfully ugly.</p>
 
-<div id="sign-up">
-	<form action="/api/v1/signup" method="POST">
-		<p> Sign Up! </p>
-		<div>
-		Username: <input type="text" name="username" />
-		</div>
-		<div>
-		Email: <input type="text" name="email" />
-		</div>
-		<div>
-		Password: <input type="password" name="password" />
-		</div>
-		<input type="submit" value="Sign up!" />
-	</form>
-</div>
+        <form action="/api/v1/signup" method="POST" >
+            <div class="form-group">
+              <input type="text" name="username" placeholder="Username" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" name="email" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" name="password" placeholder="Password" class="form-control">
+            </div>
+            <p> <button class="btn btn-lg btn-primary" type="submit" value="sign up!">Sign up now</button></p>
+          </form>
+        
+      </div>
 
-<br>
-<br>
-<br>
+      <div class="row marketing">
+      	<h3 class="text-muted">Public Feed</h3>
+        <div class="col-lg-6">
+        	<% @publicFeed.each do |t| %>
 
-<div id="login">
-	<p> Log in already! </p>
-	<div>
-		<form action="/api/v1/login" method="POST">
-			Email: <input type="text" name="email" />
-			Password: <input type="password" name="password"/>
-		</br>
-		<input type="submit" value="Submit">
-		</form>
-	</div>
-</div>
+          <h4><%= User.find(t.user_id).username %> - <%= t.created_at.strftime("%a %e, %l:%M%P") %> </h4>
+          <p><%= t.text %></p>
+          <br>
+
+          <% end %>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>&copy; BlueJade 2015</p>
+      </footer>
+
+    </div>
 
 </body>
 
