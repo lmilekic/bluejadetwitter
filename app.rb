@@ -74,12 +74,12 @@ end
 post '/api/v1/follow' do
   #TO FIX LATER -- THIS CURRENTLY RECREATES THIS SAME FOLLOWING CONNECTION OVER AND OVER
   #ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
-  stalk = UserFollowingUser.create(:user_id => 1,
-  :followed_user_id => 2)
+  stalk = UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => params["other_user_id"])
   if stalk.save
+    status 200
     redirect back
-
   else
+    status 400
     "IT DIDN'T WORK"
   end
 end
@@ -88,7 +88,8 @@ post '/api/v1/unfollow' do
   #TO FIX LATER -- THIS CURRENTLY DELETES THIS SAME FOLLOWING CONNECTION OVER AND OVER
   #ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
 
-  User.find(1).user_following_users.destroy_all
+  current_user.user_following_users.where(:user_id => current_user.id, :followed_user_id => params["other_user_id"]).destroy_all
+
 
   redirect back
 end
@@ -108,8 +109,11 @@ get '/profile/:user' do
     @username = params[:user]
     @profileFeed = Tweet.where(user_id: user_id).to_a
     @self = false
-    if @username === session[:username] then
+    @current_user = current_user
+    if @username == session[:username] then
       @self = true
+    else
+      @other_user = user.first
     end
     erb :profile
   else
@@ -136,6 +140,6 @@ def current_user
   if(session[:id].nil?)
     false
   else
-    User.where(:id => session[:id])
+    User.where(:id => session[:id]).first
   end
 end
