@@ -126,6 +126,7 @@ get '/homepage' do
   erb :homepage
 end
 
+
 get '/logout' do
   session[:id] = nil
   redirect to('/')
