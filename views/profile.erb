@@ -8,18 +8,21 @@ table, th, td {
 </style>
 </head>
 <body>
-	<% if(User.find(1).followed_users.include?(User.find(2))) %>
+	<% if(!@self) %>
+	<% if(@current_user.followed_users.include?(@other_user)) %>
 	<form action="/api/v1/unfollow" accept-charset="UTF-8" method="post">
+		<input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
 		<input type="submit" name="toggle-follow" value="Unfollow!" />
 	</form>
 	<% else %>
 		<form action="/api/v1/follow" accept-charset="UTF-8" method="post">
+			<input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
 		<input type="submit" name="toggle-follow" value="Follow!" />
 	</form>
 	<% end %>	<br></br>
+<% end %>
 
-
-    <% if @self == true %>
+    <% if @self%>
         <div>
           <form action="/api/v1/tweet" method="POST">
             <input type="text" name="tweet_text" />
