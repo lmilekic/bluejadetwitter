@@ -68,6 +68,12 @@ describe "app" do
       tweet[0].user_id.should == 1
     end
 
+    it "should not allow tweets to be longer than 140 characters" do
+      tweet = Tweet.new(:text => "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
+      :user_id => 1)
+      expect(tweet.save).to eq(false)
+    end
+
     # it "should not return a user's password" do
     #   get '/api/v1/users/paul'
     #   last_response.should be_ok
