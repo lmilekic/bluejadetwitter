@@ -2,7 +2,9 @@
 </br>
 <a href="/"> homepage </a>
 </br>
-
+<%if(current_user)%>
+<a href="/logout"> logout </a>
+<% end %>
 search bar here:
 <form action="/search" method="GET">
   Search: <input type="text" name="q">

@@ -9,9 +9,15 @@ enable :sessions
 
 get '/' do
   if(current_user)
-    redirect to('/homepage')
-    #@userTweets = []
-    #erb :homepage #This needs @userTweets to be defined
+
+      # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
+      followers = current_user.followers.to_a
+      followers_ids = followers.map{|x| x.id}
+      @userTweets = Tweet.where("user_id = ?", followers_ids).to_a
+      #@userTweets = Tweet.where(user_id: session[:id]).to_a
+
+
+      erb :homepage
   else
     @publicFeed = Tweet.last(100).reverse.to_a
     erb :welcome
@@ -36,7 +42,7 @@ post '/api/v1/login' do
   if(user)
     session[:id] = user.id
     session[:username] = user.username
-    redirect '/homepage'
+    redirect '/'
   else
     "there was an error"
   end
@@ -98,13 +104,6 @@ get '/profile/:user' do
   end
 end
 
-get '/homepage' do
-
-  # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
-  @userTweets = Tweet.where(user_id: session[:id]).to_a
-
-  erb :homepage
-end
 
 get '/search' do
   query = params["q"]
