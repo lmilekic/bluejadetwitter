@@ -78,8 +78,8 @@
         <tr>
             <table>
                 <tr><td>
-                  <b> User's Name </b> 
-                  @<%= session[:username] %> - 
+                  <b> User's Name </b>
+                  @<%= User.find(t.user_id).username %> - 
                   <i><%= t.created_at.strftime("%a %e, %l:%M%P") %></i>
                 </td></tr>
                 <tr><td>

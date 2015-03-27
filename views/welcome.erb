@@ -19,7 +19,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 
 	<link href="jumbotron-narrow.css" rel="stylesheet">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 </head>
@@ -27,37 +27,59 @@
 <body>
 
 	<div class="container">
-      <div class="header clearfix">
-
-      	<nav>
-      <div id="login" class="container">
-        <div class="navbar-header">
-          <h3 class="text-muted">BlueJade Twitter</h3>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          
-          <form action="/api/v1/login" method="POST" class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" name="email" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" name="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-          </form>
-
-        </div><!--/.navbar-collapse -->
-      </div>
-    </nav>
-        
-        
-      </div>
+      
 
       <div class="jumbotron" id="sign-up">
         <h1>Welcome to BlueJade</h1>
         <p class="lead">We are currently working on making this site less painfully ugly.</p>
 
-        <form action="/api/v1/signup" method="POST" >
+        <div class="row">
+          
+        </div>
+
+      </div>
+
+      <div class="row marketing">
+        <div class="col-md-6">
+          <h2 class="text-muted">Public Feed</h2>
+          <div class="panel panel-primary"><div class="panel-body" style="max-height: 500px; overflow-y: scroll;">
+
+          <% @publicFeed.each do |t| %>
+
+          <div class="media">
+            <div class="media-left">
+              <a href="#">
+                <img class="media-object" src="..." alt="...">
+              </a>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">
+                <%= User.find(t.user_id).username %> 
+                <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+              </h4>
+              <%= t.text %>
+            </div>
+          </div>
+
+          <% end %>
+
+        </div></div>
+        </div>
+
+        <div class="col-md-6">
+          <h2 class="text-muted">Sign in with your email</h2>
+          <form action="/api/v1/login" method="POST">
+            <div class="form-group">
+              <input type="text" name="login" placeholder="Username or email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" name="password" placeholder="Password" class="form-control">
+            </div>
+            <p> <button type="submit" class="btn btn-lg btn-primary">Log in</button> </p>
+          </form>
+          
+          <h2 class="text-muted">Register today</h2>
+          <form action="/api/v1/signup" method="POST" >
             <div class="form-group">
               <input type="text" name="username" placeholder="Username" class="form-control">
             </div>
@@ -67,22 +89,10 @@
             <div class="form-group">
               <input type="password" name="password" placeholder="Password" class="form-control">
             </div>
-            <p> <button class="btn btn-lg btn-primary" type="submit" value="sign up!">Sign up now</button></p>
+            <p> <button class="btn btn-lg btn-primary" type="submit" value="sign up!">Sign up</button></p>
           </form>
-        
-      </div>
-
-      <div class="row marketing">
-      	<h3 class="text-muted">Public Feed</h3>
-        <div class="col-lg-6">
-        	<% @publicFeed.each do |t| %>
-
-          <h4><%= User.find(t.user_id).username %> - <%= t.created_at.strftime("%a %e, %l:%M%P") %> </h4>
-          <p><%= t.text %></p>
-          <br>
-
-          <% end %>
         </div>
+
       </div>
 
       <footer class="footer">
@@ -90,7 +100,6 @@
       </footer>
 
     </div>
-
 </body>
 
 </html>

@@ -6,16 +6,18 @@ require_relative 'models/tweet'
 require_relative 'models/user_following_user'
 
 enable :sessions
-before do
-  puts "id is " + session[:id].to_s
-end
 
 get '/' do
-  # if user is signed in then erg :homepage else erb :welcome
   if(current_user)
-    redirect to('/homepage')
-    #@userTweets = []
-    #erb :homepage #This needs @userTweets to be defined
+
+      # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
+      followers = current_user.followers.to_a
+      followers_ids = followers.map{|x| x.id}
+      @userTweets = Tweet.where("user_id = ?", followers_ids).to_a
+      #@userTweets = Tweet.where(user_id: session[:id]).to_a
+
+
+      erb :homepage
   else
     @publicFeed = Tweet.last(100).reverse.to_a
     erb :welcome
@@ -36,11 +38,16 @@ post '/api/v1/signup' do
 end
 
 post '/api/v1/login' do
-  user = User.where(:email => params[:email], :password => params[:password]).first
+  if params[:login].include? "@"
+    user = User.where(:email => params[:login], :password => params[:password]).first
+  else
+    user = User.where(:username => params[:login], :password => params[:password]).first
+  end
+  
   if(user)
     session[:id] = user.id
     session[:username] = user.username
-    redirect '/homepage'
+    redirect '/'
   else
     "there was an error"
   end
@@ -57,23 +64,8 @@ post '/api/v1/tweet' do
   end
 end
 
-#BELOW is close to what we want to have this post request doing later, but it currently relies on too many other things
-
-# post '/api/v1/follow/:id' do
-# 	#TO FIX LATER -- THIS CURRENTLY RECREATES THIS SAME FOLLOWING CONNECTION OVER AND OVER
-# 	#ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
-#  	stalk = UserFollowingUser.create(:user_id => session[:id],
-#  										:followed_user_id => params[:id])
-#  	if stalk.save
-#  		redirect back
-#  	else
-#  		"IT DIDN'T WORK"
-#  	end
-# end
 
 post '/api/v1/follow' do
-  #TO FIX LATER -- THIS CURRENTLY RECREATES THIS SAME FOLLOWING CONNECTION OVER AND OVER
-  #ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
   stalk = UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => params["other_user_id"])
   if stalk.save
     status 200
@@ -85,12 +77,7 @@ post '/api/v1/follow' do
 end
 
 post '/api/v1/unfollow' do
-  #TO FIX LATER -- THIS CURRENTLY DELETES THIS SAME FOLLOWING CONNECTION OVER AND OVER
-  #ALSO- need to add in reference to user id of the profile and user id of the person viewing the profile
-
   current_user.user_following_users.where(:user_id => current_user.id, :followed_user_id => params["other_user_id"]).destroy_all
-
-
   redirect back
 end
 
@@ -122,12 +109,20 @@ get '/profile/:user' do
   end
 end
 
-get '/homepage' do
 
-  # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
-  @userTweets = Tweet.where(user_id: session[:id]).to_a
-
-  erb :homepage
+get '/search' do
+  query = params["q"]
+  query_array = query.split
+  results = Set.new
+  #we're gonna do a full text search
+  query_array.each do |q|
+    t = Tweet.where('text LIKE ?', "%#{q}%")
+    t.each do |tweet|
+      results.add(tweet)
+    end
+  end
+  @results = results
+  erb :search
 end
 
 
