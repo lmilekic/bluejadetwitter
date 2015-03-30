@@ -10,12 +10,16 @@ enable :sessions
 get '/' do
   if(current_user)
 
-      # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
       followers = current_user.followers.to_a
       followers_ids = followers.map{|x| x.id}
-      @userTweets = Tweet.where("user_id = ?", followers_ids).to_a
-      #@userTweets = Tweet.where(user_id: session[:id]).to_a
 
+      # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
+      #@userTweets = Tweet.where("user_id = ?", followers_ids).to_a
+
+      #this is a temporary fix:
+      @userTweets = []
+      @userTweets << Tweet.find(100176)
+      puts @userTweets
 
       erb :homepage
   else
@@ -38,7 +42,12 @@ post '/api/v1/signup' do
 end
 
 post '/api/v1/login' do
-  user = User.where(:email => params[:email], :password => params[:password]).first
+  if params[:login].include? "@"
+    user = User.where(:email => params[:login], :password => params[:password]).first
+  else
+    user = User.where(:username => params[:login], :password => params[:password]).first
+  end
+  
   if(user)
     session[:id] = user.id
     session[:username] = user.username
