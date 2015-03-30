@@ -14,12 +14,12 @@ get '/' do
       followers_ids = followers.map{|x| x.id}
 
       # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
-      #@userTweets = Tweet.where("user_id = ?", followers_ids).to_a
+      @userTweets = Tweet.where("user_id = ?", followers_ids).to_a
 
       #this is a temporary fix:
-      @userTweets = []
-      @userTweets << Tweet.find(100176)
-      puts @userTweets
+      #@userTweets = []
+      #@userTweets << Tweet.find(100176)
+      #puts @userTweets
 
       erb :homepage
   else
