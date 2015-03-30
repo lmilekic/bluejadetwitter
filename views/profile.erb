@@ -8,7 +8,7 @@ table, th, td {
 </style>
 </head>
 <body>
-	<% if(!@self) %>
+	<% if(!@self && @current_user) %>
 	<% if(@current_user.followed_users.include?(@other_user)) %>
 	<form action="/api/v1/unfollow" accept-charset="UTF-8" method="post">
 		<input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
