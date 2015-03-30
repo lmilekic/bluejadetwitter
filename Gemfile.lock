@@ -17,6 +17,8 @@ GEM
     arel (6.0.0)
     builder (3.2.2)
     diff-lcs (1.2.5)
+    faker (1.4.3)
+      i18n (~> 0.5)
     i18n (0.7.0)
     json (1.8.2)
     minitest (5.5.1)
@@ -57,6 +59,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  faker
   minitest
   pg
   rack-test

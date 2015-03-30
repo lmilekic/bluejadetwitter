@@ -15,3 +15,4 @@ gem "minitest"
 gem 'rspec'
 gem 'rack-test'
 gem 'rake'
+gem 'faker'
