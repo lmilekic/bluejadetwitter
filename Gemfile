@@ -14,3 +14,4 @@ gem 'sinatra-activerecord'
 gem "minitest"
 gem 'rspec'
 gem 'rack-test'
+gem 'newrelic_rpm'
