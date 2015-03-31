@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="Clara Nice">
+    <meta name="author" content="Clara Nice and a little bit of Calvin Wang">
     <link rel="icon" href="../../favicon.ico">
     
 </head>
@@ -19,47 +19,46 @@
 
 	<div class="container">
       
-
       <div class="jumbotron" id="sign-up">
-        <h1>Welcome to BlueJade</h1>
-        <p class="lead">We are currently working on making this site less painfully ugly.<br>
-          By Zach Hogan, Clara Nice, Luka Milekic, Calvin Wang.</p>
-
-        <div class="row">
-          
-        </div>
-
+        <h1>Welcome to BlueJade! </h1>
+        <p class="lead">
+          We are currently working on making this site less painfully ugly.<br>
+          <small>By Zach Hogan, Clara Nice, Luka Milekic, Calvin Wang.</small>
+        </p>
       </div>
 
       <div class="row marketing">
         <div class="col-md-6">
           <h2 class="text-muted">Public Feed</h2>
-          <div class="panel panel-primary"><div class="panel-body" style="max-height: 500px; overflow-y: scroll;">
+          <div class="panel panel-primary">
+            <div class="panel-body" style="max-height: 500px; overflow-y: scroll;">
 
-          <% @publicFeed.each do |t| %>
+              <% @publicFeed.each do |t| %>
 
-          <div class="media">
-            <div class="media-left">
-              <a href="#"> 
-                <img class="media-object" src='/pngs/<%= rand(110) %>.png' height="50">
-              </a>
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">
-                <%= User.find(t.user_id).username %> 
-                <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
-              </h4>
-              <%= t.text %>
+              <div class="media">
+                <div class="media-left">
+                  <a href="#"> 
+                    <img class="media-object" src='/pngs/<%= rand(110) %>.png' height="50">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">
+                    <% user = User.find(t.user_id).username %> 
+                    <a href="/user/<%= user %>"><%= user %></a>
+                    <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+                  </h4>
+                  <%= t.text %>
+                </div>
+              </div>
+
+              <% end %>
+
             </div>
           </div>
-
-          <% end %>
-
-        </div></div>
         </div>
 
         <div class="col-md-6">
-          <h2 class="text-muted">Sign in with your email</h2>
+          <h2 class="text-muted">Sign in <small>Welcome back, cutie :)</small></h2>
           <form action="/api/v1/login" method="POST">
             <div class="form-group">
               <input type="text" name="login" placeholder="Username or email" class="form-control">
@@ -70,7 +69,7 @@
             <p> <button type="submit" class="btn btn-lg btn-primary">Log in</button> </p>
           </form>
           
-          <h2 class="text-muted">Register today</h2>
+          <h2 class="text-muted">New here? <small>Registering is easy!</small></h2>
           <form action="/api/v1/signup" method="POST" >
             <div class="form-group">
               <input type="text" name="username" placeholder="Username" class="form-control">
