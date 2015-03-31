@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  validates_uniqueness_of :username, :email
+
   has_many :tweets
   has_many :user_following_users, :foreign_key => :user_id
   has_many :followed_users, :class_name => :User, :through => :user_following_users, :source => :followed_user
