@@ -37,7 +37,7 @@ post '/api/v1/signup' do
     session[:username] = user.username
     redirect '/user/' + user.username
   else
-    "Sorry, there was an error!"
+    "There was an error with signup! (ಥ﹏ಥ)"
   end
 end
 
@@ -53,7 +53,7 @@ post '/api/v1/login' do
     session[:username] = user.username
     redirect '/'
   else
-    "there was an error"
+    "There was an error with login! (ง'̀-'́)ง"
   end
 end
 
@@ -64,7 +64,7 @@ post '/api/v1/tweet' do
   if tweet.save
     redirect back #refreshes
   else
-    "unable to tweet"
+    "Tweet was unable to be saved or something! (╯°□°）╯︵ ┻━┻"
   end
 end
 
@@ -76,7 +76,7 @@ post '/api/v1/follow' do
     redirect back
   else
     status 400
-    "IT DIDN'T WORK"
+    "Following didn't work! (ಥ_ಥ)"
   end
 end
 
@@ -109,7 +109,7 @@ get '/user/:user' do
     erb :profile
   else
     status 404
-    "Ooops"
+    "User's profile unable to be displayed. ｡゜(｀Д´)゜｡"
   end
 end
 
@@ -134,6 +134,7 @@ get '/logout' do
   session[:id] = nil
   redirect to('/')
 end
+
 private
 def current_user
   if(session[:id].nil?)
