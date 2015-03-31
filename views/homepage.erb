@@ -1,98 +1,131 @@
 <!DOCTYPE html>
+
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>home</title>
-<style type="text/css">
-#header {
-  position: static;
-  height: 30px;
-  width: 100%;
-  background-color: #09F;
-}
-#search-box {
-  background-color: #999;
-  position: relative;
-  height: 30px;
-  width: 1000px;
-  margin: 0 auto 0 auto;
-  padding: 5px 15px 5px 15px;
-}
-.push-left {
-  background-color: #36F;
-  width: 25%;
-  float: left;
-  padding: 15px;
-}
-.push-right {
-  width: 65%;
-  float: right;
-  background-color: #3CC;
-  padding: 15px;
-}
-#main-container {
-  background-color: #039;
-  width: 1000px;
-  margin: 0 auto 0 auto;
-  top: 15px;
-  position: relative;
-  z-index: -1;
-  padding: 15px;
-  height: auto;
-}
-</style>
-</head>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="Calvin Wang">
+    <link rel="icon" href="../../favicon.ico"> 
+  </head>
 
-<body>
+  <body>
 
-<div id="header">
-  <div id="search-box" align="right">
-    <input type="text" name="query" />
-    <input name="search" type="submit" id="search" />
-  </div>
-</div>
+    <div class="container">
 
-<div id="main-container">
+        <div class="jumbotron">
+          a nice header image here
+        </div>
 
-  <div class="push-left">
-    <h1><img src="Luka.jpg" height=50px width=50px/> <%= session[:username] %> </h1>
-    info<br />
-    follower-count<br />
-    <a href="/user">profile link?</a><br />
+        <div class="row marketing">
+          <div class="col-md-4">
+            <div class="panel panel-primary">
+              <div class="panel-body">
 
-  </div>
-  <div class="push-right">
+                <div class="media">
+                  <div class="media-left">
+                    <a href="#">
+                      <img class="media-object" src="pngs/1.png" width="100">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <a href="/user/<%= session[:username] %>">
+                      <h3 class="media-heading"><%= session[:username] %></h3>
+                    </a>
+                    short blurb<br>
+                    num followers<br>
+                    num following
+                  </div>
+                </div>
 
-    <div>
-      <form action="/api/v1/tweet" method="POST">
-        <input type="text" name="tweet_text" />
-        <input type="submit" value="tweet!">
-      </form>
-    </div>
-    <a href="/logout"> logout </a>
+              </div>
+            </div>
+          </div>
 
-    <div>
-      <table>
+          <div class="col-md-6">
+            <div class="panel panel-primary">
 
-        <% @userTweets.each do |t| %>
-        <tr>
-            <table>
-                <tr><td>
-                  <b> User's Name </b>
-                  @<%= User.find(t.user_id).username %> - 
-                  <i><%= t.created_at.strftime("%a %e, %l:%M%P") %></i>
-                </td></tr>
-                <tr><td>
-                  <%= t.text %>
-                </td></tr>
-            </table>
-        </tr>
-        <% end %>
+              <div class="panel-title">
+                <form action="/api/v1/tweet" method="POST">
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <img src="pngs/1.png" height="20">
+                    </div>
+                    
+                    <input type="text" name="tweet_text" placeholder="What is up in the hizzle?" class="form-control">
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-send"></span>
+                      </button>
+                    </span>
+                  </div>
+                </form>
+              </div>
 
-      </table>
-    </div>
-  </div>
-</div>
 
-</body>
+
+
+
+
+              <div class="panel-body">
+
+                list of tweets from those you follow here<br>
+                the default should display:<br>
+                "you're not following anyone! check out some recommended followers on the right!"
+
+                <!-- the following does not work on local -->
+                <div>
+                  <table>
+                    <% @userTweets.each do |t| %>
+                      <tr>
+                          <table>
+                              <tr><td>
+                                <b> User's Name </b>
+                                @<%= User.find(t.user_id).username %> - 
+                                <i><%= t.created_at.strftime("%a %e, %l:%M%P") %></i>
+                              </td></tr>
+                              <tr><td>
+                                <%= t.text %>
+                              </td></tr>
+                          </table>
+                      </tr>
+                    <% end %>
+                  </table>
+                </div>
+                
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <h4 class="text-muted"><center>recommended users for you</center></h4>
+            <div class="panel panel-primary">
+              <div class="panel-body">
+
+                <!-- replace relevant parts with some for loops with recommended users -->
+                <div class="media">
+                  <div class="media-left media-middle">
+                    <a href="#"> 
+                      <img class="media-object" src='/pngs/<%= rand(110) %>.png' height="30">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">
+                      username
+                    </h4>
+                  </div>
+                </div>
+                <!-- -->
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+  </body>
 </html>
