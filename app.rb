@@ -7,6 +7,10 @@ require_relative 'models/user_following_user'
 
 enable :sessions
 
+get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
+  "loaderio-67d68465390333f8ce3945c9399a6717"
+end
+
 get '/' do
   if(current_user)
 
