@@ -9,34 +9,36 @@
     <meta name="description" content="">
     <meta name="author" content="Calvin Wang">
     <link rel="icon" href="../../favicon.ico"> 
+    <title>bluejade</title>
   </head>
 
   <body>
 
     <div class="container">
 
-        <div class="jumbotron">
-          a nice header image here
-        </div>
-
         <div class="row marketing">
           <div class="col-md-4">
             <div class="panel panel-primary">
+
+              <div class="panel-title panel-heading">
+                    header image
+              </div>
+
               <div class="panel-body">
 
                 <div class="media">
                   <div class="media-left">
                     <a href="#">
-                      <img class="media-object" src="pngs/1.png" width="100">
+                      <img class="media-object" src="/pngs/1.png" width="100">
                     </a>
                   </div>
                   <div class="media-body">
                     <a href="/user/<%= session[:username] %>">
                       <h3 class="media-heading"><%= session[:username] %></h3>
                     </a>
-                    short blurb<br>
+                    num tweets<br>
                     num followers<br>
-                    num following
+                    num following<br>
                   </div>
                 </div>
 
@@ -51,7 +53,7 @@
                 <form action="/api/v1/tweet" method="POST">
                   <div class="input-group">
                     <div class="input-group-addon">
-                      <img src="pngs/1.png" height="20">
+                      <img src="/pngs/1.png" height="20">
                     </div>
                     
                     <input type="text" name="tweet_text" placeholder="What is up in the hizzle?" class="form-control">
@@ -122,6 +124,7 @@
                     <h4 class="media-heading">
                       username
                     </h4>
+                    this can be the intersection of who the ppl u follow follow
                   </div>
                 </div>
                 <!-- -->
