@@ -4,6 +4,7 @@ require './config/environments'
 require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
+require './api_v1'
 
 enable :sessions
 
@@ -26,63 +27,6 @@ get '/' do
     @publicFeed = Tweet.last(100).reverse.to_a
     erb :welcome
   end
-end
-
-post '/api/v1/signup' do
-  user = User.create(:username => params[:username],
-  :email => params[:email],
-  :password => params[:password] )
-  if user.save
-    session[:id] = user.id
-    session[:username] = user.username
-    redirect '/user/' + user.username
-  else
-    "There was an error with signup! (ಥ﹏ಥ)"
-  end
-end
-
-post '/api/v1/login' do
-  if params[:login].include? "@"
-    user = User.where(:email => params[:login], :password => params[:password]).first
-  else
-    user = User.where(:username => params[:login], :password => params[:password]).first
-  end
-  
-  if(user)
-    session[:id] = user.id
-    session[:username] = user.username
-    redirect '/'
-  else
-    "There was an error with login! (ง'̀-'́)ง"
-  end
-end
-
-post '/api/v1/tweet' do
-  tweet = Tweet.create(:text => params[:tweet_text],
-  :user_id => session[:id],
-  :created_at => Time.now) #I think created_at is auto_generated
-  if tweet.save
-    redirect back #refreshes
-  else
-    "Tweet was unable to be saved or something! (╯°□°）╯︵ ┻━┻"
-  end
-end
-
-
-post '/api/v1/follow' do
-  stalk = UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => params["other_user_id"])
-  if stalk.save
-    status 200
-    redirect back
-  else
-    status 400
-    "Following didn't work! (ಥ_ಥ)"
-  end
-end
-
-post '/api/v1/unfollow' do
-  current_user.user_following_users.where(:user_id => current_user.id, :followed_user_id => params["other_user_id"]).destroy_all
-  redirect back
 end
 
 get '/user' do
