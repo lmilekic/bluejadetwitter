@@ -49,7 +49,7 @@
                 </span>
               </form>
             </div>
-            
+
             <% if(current_user) %>
               <a href="/logout">
                 <button type="submit" class="btn btn-default">logout</button>
@@ -63,7 +63,11 @@
   </div>
 
 </body>
-
+<h3>
+<%if flash[:error] %>
+  <%= flash[:error] %>
+<%end%>
+</h3>
 <%=yield%>
 
 <footer class="footer">

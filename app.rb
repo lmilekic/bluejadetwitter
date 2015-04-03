@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/flash'
 require 'sinatra/activerecord'
 require './config/environments'
 require_relative 'models/user'
@@ -43,7 +44,8 @@ post '/api/v1/signup' do
     session[:username] = user.username
     redirect '/user/' + user.username
   else
-    "There was an error with signup! (ಥ﹏ಥ)"
+    flash[:error] = "username or email is already taken"
+    redirect '/'
   end
 end
 
@@ -59,7 +61,8 @@ post '/api/v1/login' do
     session[:username] = user.username
     redirect '/'
   else
-    "There was an error with login! (ง'̀-'́)ง"
+    flash[:error] = "There was an error with login"
+    redirect '/'
   end
 end
 
@@ -70,7 +73,8 @@ post '/api/v1/tweet' do
   if tweet.save
     redirect back #refreshes
   else
-    "Tweet was unable to be saved or something! (╯°□°）╯︵ ┻━┻"
+    flash[:error] = "Tweet was unable to be saved or something!"
+    redirect back
   end
 end
 
@@ -82,7 +86,8 @@ post '/api/v1/follow' do
     redirect back
   else
     status 400
-    "Following didn't work! (ಥ_ಥ)"
+    flash[:error] = "Following didn't work!"
+    redirect back
   end
 end
 
@@ -115,7 +120,7 @@ get '/user/:user' do
     erb :profile
   else
     status 404
-    "User's profile unable to be displayed. ｡゜(｀Д´)゜｡"
+    #"User's profile unable to be displayed. ｡゜(｀Д´)゜｡"
   end
 end
 
@@ -139,6 +144,11 @@ end
 get '/logout' do
   session[:id] = nil
   redirect to('/')
+end
+
+not_found do
+  status 404
+  erb :oops
 end
 
 private
