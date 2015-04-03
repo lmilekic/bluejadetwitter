@@ -11,6 +11,7 @@ group :production do
 end
 
 gem 'sinatra-activerecord'
+gem 'sinatra-flash'
 gem "minitest"
 gem 'rspec'
 gem 'rack-test'
