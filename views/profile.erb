@@ -1,146 +1,161 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="Calvin Wang">
-    <link rel="icon" href="../../favicon.ico">
-    <title><%= @username %> on bluejade</title>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="Calvin Wang">
+  <link rel="icon" href="../../favicon.ico">
+  <title><%= @username %> on bluejade</title>
+</head>
 
-  <body>
+<body>
 
-    <div class="container">
+  <div class="container">
 
-        <div class="jumbotron">
-          a nice header image here
+    <div class="jumbotron">
+      a nice header image here
+    </div>
+
+    FOLLOW BUTTON GOES HERE:
+    <% if(!@self && @current_user) %>
+    <% if(@current_user.followed_users.include?(@other_user)) %>
+    <form action="/api/v1/unfollow" accept-charset="UTF-8" method="post">
+      <input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
+      <input type="submit" name="toggle-follow" value="Unfollow!" />
+    </form>
+    <% else %>
+    <form action="/api/v1/follow" accept-charset="UTF-8" method="post">
+      <input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
+      <input type="submit" name="toggle-follow" value="Follow!" />
+    </form>
+    <% end %>	<br></br>
+    <% end %>
+
+    <div class="row marketing">
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-title panel-heading">
+            <img src="/pngs/1.png" width="325">
+          </div>
+          <div class="panel-body">
+
+            <h3><%= @username %></h3>
+            short blurb<br>
+            Joined on
+            <%= User.where(:username => @username)[0].created_at.strftime("%B %e, %Y") %>
+
+          </div>
+
+          <% if @self %>
+          <div class="panel-footer">
+            <form action="/api/v1/tweet" method="POST">
+              <div class="input-group">
+
+                <input type="text" name="tweet_text" placeholder="What is up in the hizzle?" class="form-control">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-send"></span>
+                  </button>
+                </span>
+
+              </div>
+            </form>
+          </div>
+          <% end %>
+
         </div>
+      </div>
 
-        <div class="row marketing">
-          <div class="col-md-4">
-            <div class="panel panel-default">
-              <div class="panel-title panel-heading">
-                <img src="/pngs/1.png" width="325">
+      <div class="col-md-6">
+        <div class="panel panel-primary">
+
+          <div class="panel-title panel-heading">
+            <h3 class="panel-title">info about num tweets, num followers, num followed</h3>
+          </div>
+
+          <div class="panel-body">
+
+            list of tweets that you made here<br>
+            the default should display:<br>
+            "you haven't made any tweets! make a tweet now!"<br>
+            <b>todo: paginate or 'loadmore'</b>
+
+            <% @profileFeed.each do |t| %>
+            <div class="media">
+              <div class="media-left">
+                <a href="#">
+                  <img class="media-object" src='/pngs/3.png' height="50">
+                </a>
               </div>
-              <div class="panel-body">
-
-                <h3><%= @username %></h3>
-                short blurb<br>
-                Joined on 
-                <%= User.where(:username => @username)[0].created_at.strftime("%B %e, %Y") %>
-
+              <div class="media-body">
+                <h4 class="media-heading">
+                  <%= User.find(t.user_id).username %>
+                  <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+                </h4>
+                <%= t.text %>
               </div>
-            
-              <% if @self %>
-                <div class="panel-footer">
-                    <form action="/api/v1/tweet" method="POST">
-                      <div class="input-group">
-
-                        <input type="text" name="tweet_text" placeholder="What is up in the hizzle?" class="form-control">
-                        <span class="input-group-btn">
-                          <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-send"></span>
-                          </button>
-                        </span>
-
-                      </div>
-                    </form>
-                </div>
+            </div>
             <% end %>
 
-            </div>
           </div>
+        </div>
+      </div>
 
-          <div class="col-md-6">
-            <div class="panel panel-primary">
+      <div class="col-md-2">
+        <h4 class="text-muted"><center>users *user* follows</center></h4>
+        <div class="panel panel-primary">
+          <div class="panel-body">
 
-              <div class="panel-title panel-heading">
-                <h3 class="panel-title">info about num tweets, num followers, num followed</h3>
+            <!-- replace relevant parts with some for loops with users -->
+            <div class="media">
+              <div class="media-left media-middle">
+                <a href="#">
+                  <img class="media-object" src='/pngs/<%= rand(110) %>.png' height="30">
+                </a>
               </div>
-
-              <div class="panel-body">
-
-                list of tweets that you made here<br>
-                the default should display:<br>
-                "you haven't made any tweets! make a tweet now!"<br>
-                <b>todo: paginate or 'loadmore'</b>
-
-                <% @profileFeed.each do |t| %>
-                  <div class="media">
-                    <div class="media-left">
-                      <a href="#"> 
-                        <img class="media-object" src='/pngs/3.png' height="50">
-                      </a>
-                    </div>
-                    <div class="media-body">
-                      <h4 class="media-heading">
-                        <%= User.find(t.user_id).username %>
-                        <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
-                      </h4>
-                      <%= t.text %>
-                    </div>
-                  </div>
-                <% end %>
-                
+              <div class="media-body">
+                <h4 class="media-heading">
+                  username
+                </h4>
+                list 10 or something
               </div>
             </div>
-          </div>
-
-          <div class="col-md-2">
-            <h4 class="text-muted"><center>users *user* follows</center></h4>
-            <div class="panel panel-primary">
-              <div class="panel-body">
-
-                <!-- replace relevant parts with some for loops with users -->
-                <div class="media">
-                  <div class="media-left media-middle">
-                    <a href="#"> 
-                      <img class="media-object" src='/pngs/<%= rand(110) %>.png' height="30">
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <h4 class="media-heading">
-                      username
-                    </h4>
-                    list 10 or something
-                  </div>
-                </div>
-                <!-- -->
-
-              </div>
-            </div>
-
-            <h4 class="text-muted"><center>users following *user*</center></h4>
-            <div class="panel panel-primary">
-              <div class="panel-body">
-
-                <!-- replace relevant parts with some for loops with users -->
-                <div class="media">
-                  <div class="media-left media-middle">
-                    <a href="#"> 
-                      <img class="media-object" src='/pngs/<%= rand(110) %>.png' height="30">
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <h4 class="media-heading">
-                      username
-                    </h4>
-                    list 10 or something
-                  </div>
-                </div>
-                <!-- -->
-
-              </div>
-            </div>
+            <!-- -->
 
           </div>
+        </div>
 
+        <h4 class="text-muted"><center>users following *user*</center></h4>
+        <div class="panel panel-primary">
+          <div class="panel-body">
+
+            <!-- replace relevant parts with some for loops with users -->
+            <div class="media">
+              <div class="media-left media-middle">
+                <a href="#">
+                  <img class="media-object" src='/pngs/<%= rand(110) %>.png' height="30">
+                </a>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">
+                  username
+                </h4>
+                list 10 or something
+              </div>
+            </div>
+            <!-- -->
+
+          </div>
         </div>
 
       </div>
-  </body>
+
+    </div>
+
+  </div>
+</body>
 </html>

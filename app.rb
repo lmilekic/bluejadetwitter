@@ -14,11 +14,13 @@ end
 get '/' do
   if(current_user)
 
-      followers = current_user.followers.to_a
-      followers_ids = followers.map{|x| x.id}
+      follows = current_user.followed_users.to_a
+      follows_ids = follows.map{|x| x.id}
+      puts "follows = :" + follows.to_s
+      puts "follows_ids = " + follows_ids.to_s
 
       # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
-      @userTweets = Tweet.where("user_id = ?", followers_ids).to_a
+      @userTweets = Tweet.where("user_id = ?", follows_ids).to_a
 
       #this is a temporary fix:
       #@userTweets = []
@@ -51,7 +53,7 @@ post '/api/v1/login' do
   else
     user = User.where(:username => params[:login], :password => params[:password]).first
   end
-  
+
   if(user)
     session[:id] = user.id
     session[:username] = user.username
