@@ -40,7 +40,7 @@ get '/' do
 
       erb :homepage
   else
-    @publicFeed = Tweet.last(100).to_a
+    @publicFeed = Tweet.last(100).to_a.reverse!
     erb :welcome
   end
 end
