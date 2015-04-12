@@ -1,4 +1,28 @@
-<%@results.each do |tweet|%>
-<%=tweet.text%>
-</br>
-<%end%>
+<div class="col-md-6">
+	<h2 class="text-muted">Search Results</h2>
+	<div class="panel panel-primary">
+		<div class="panel-body">
+		  <% count = 0 %>
+		  <% @results.each do |t| %>
+
+			  <div class="media">
+			    <div class="media-left">
+			      <a href="#"> 
+			        <img class="media-object" src='/pngs/<%= count %>.png' height="50">
+			      </a>
+			    </div>
+			    <div class="media-body">
+			      <h4 class="media-heading">
+			        <% user = User.find(t.user_id).username %> 
+			        <a href="/user/<%= user %>"><%= user %></a>
+			        <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+			      </h4>
+			      <%= t.text %>
+			    </div>
+			  </div>
+			  <% count = count + 1 %>
+		  <% end %>
+
+		</div>
+	</div>
+</div>	

@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/flash'
 require 'sinatra/activerecord'
 require './config/environments'
+require 'json'
 require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
@@ -19,10 +20,19 @@ get '/' do
       follows_ids = follows.map{|x| x.id}
       puts "follows = :" + follows.to_s
       puts "follows_ids = " + follows_ids.to_s
+      results = Set.new
+      #we're gonna do a full text search
+      follows_ids.each do |f|
+        #This is a very hacky fix to allow following more than one person
+        t = Tweet.where("user_id = ?", f).last(100/follows_ids.size).reverse.to_a
+        t.each do |tweet|
+          results.add(tweet)
+        end
+      end
+      @userTweets = results
 
       # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
-      @userTweets = Tweet.where("user_id = ?", follows_ids).to_a
-
+      #@userTweets = Tweet.where("user_id = ?", follows_ids).last(100).reverse.to_a
       #this is a temporary fix:
       #@userTweets = []
       #@userTweets << Tweet.find(100176)
@@ -105,6 +115,7 @@ get '/user' do
 end
 
 get '/user/:user' do
+  #For listing followers/followees we should probably make it so it only calculates it once and changes when you unfollow someone
   user = User.where(username: params[:user])
   if(user.first != nil)
     user_id = user.first.id
@@ -131,7 +142,8 @@ get '/search' do
   results = Set.new
   #we're gonna do a full text search
   query_array.each do |q|
-    t = Tweet.where('text LIKE ?', "%#{q}%")
+    #This is a temporary fix for a large result set for searching
+    t = Tweet.where('text LIKE ?', "%#{q}%").last(100/query_array.size)
     t.each do |tweet|
       results.add(tweet)
     end

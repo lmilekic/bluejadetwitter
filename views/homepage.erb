@@ -67,43 +67,27 @@
               </div>
 
               <div class="panel-body">
-
-                <div class="media">
-                  <div class="media-left">
-                    <a href="#"> 
-                      <img class="media-object" src='/pngs/3.png' height="50">
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <h4 class="media-heading">
-                      sample_username
-                      <small>March 32nd, 4:20pm</small>
-                    </h4>
-                    Boy i am surely a real person and not a fake made-up example! #blessed
-                  </div>
-                </div>
-
-                list of tweets from those you follow here<br>
-                the default should display:<br>
-                "you're not following anyone! check out some recommended followers on the right!"
-
-                <% @userTweets.each do |t| %>
-                  <div class="media">
-                    <div class="media-left">
-                      <a href="#"> 
-                        <img class="media-object" src='/pngs/3.png' height="50">
-                      </a>
+                <% if(@userTweets.size != 0) %>
+                  <% @userTweets.each do |t| %>
+                    <div class="media">
+                      <div class="media-left">
+                        <a href="#"> 
+                          <img class="media-object" src='/pngs/3.png' height="50">
+                        </a>
+                      </div>
+                      <div class="media-body">
+                        <h4 class="media-heading">
+                          <% user = User.find(t.user_id).username %> 
+                          <a href="/user/<%= user %>">@<%= user %></a>
+                          <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+                        </h4>
+                        <%= t.text %>
+                      </div>
                     </div>
-                    <div class="media-body">
-                      <h4 class="media-heading">
-                        @<%= User.find(t.user_id).username %>
-                        <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
-                      </h4>
-                      <%= t.text %>
-                    </div>
-                  </div>
+                  <% end %>
+                <% else %>
+                  You are not following anyone!<br>
                 <% end %>
-
               </div>
             </div>
           </div>

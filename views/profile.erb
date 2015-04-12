@@ -17,10 +17,8 @@
   <div class="container">
 
     <div class="jumbotron">
-      a nice header image here
+      
     </div>
-
-    FOLLOW BUTTON GOES HERE:
     <% if(!@self && @current_user) %>
     <% if(@current_user.followed_users.include?(@other_user)) %>
     <form action="/api/v1/unfollow" accept-charset="UTF-8" method="post">
@@ -74,31 +72,32 @@
         <div class="panel panel-primary">
 
           <div class="panel-title panel-heading">
-            <h3 class="panel-title">info about num tweets, num followers, num followed</h3>
+            <h3 class="panel-title">Tweets</h3>
           </div>
 
           <div class="panel-body">
+            <% if(@profileFeed.size != 0) %>
+              
+              <b>todo: paginate or 'loadmore'</b>
 
-            list of tweets that you made here<br>
-            the default should display:<br>
-            "you haven't made any tweets! make a tweet now!"<br>
-            <b>todo: paginate or 'loadmore'</b>
-
-            <% @profileFeed.each do |t| %>
-            <div class="media">
-              <div class="media-left">
-                <a href="#">
-                  <img class="media-object" src='/pngs/3.png' height="50">
-                </a>
+              <% @profileFeed.each do |t| %>
+              <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <img class="media-object" src='/pngs/3.png' height="50">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">
+                    <%= User.find(t.user_id).username %>
+                    <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+                  </h4>
+                  <%= t.text %>
+                </div>
               </div>
-              <div class="media-body">
-                <h4 class="media-heading">
-                  <%= User.find(t.user_id).username %>
-                  <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
-                </h4>
-                <%= t.text %>
-              </div>
-            </div>
+              <% end %>
+            <% else %>
+              You haven't made any tweets! Make a tweet now!<br>
             <% end %>
 
           </div>
@@ -106,7 +105,7 @@
       </div>
 
       <div class="col-md-2">
-        <h4 class="text-muted"><center>users *user* follows</center></h4>
+        <h4 class="text-muted"><center>Following</center></h4>
         <div class="panel panel-primary">
           <div class="panel-body">
 
@@ -129,7 +128,7 @@
           </div>
         </div>
 
-        <h4 class="text-muted"><center>users following *user*</center></h4>
+        <h4 class="text-muted"><center>Followers</center></h4>
         <div class="panel panel-primary">
           <div class="panel-body">
 
