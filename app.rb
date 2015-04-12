@@ -24,12 +24,12 @@ get '/' do
       #we're gonna do a full text search
       follows_ids.each do |f|
         #This is a very hacky fix to allow following more than one person
-        t = Tweet.where("user_id = ?", f).last(100/follows_ids.size).reverse.to_a
+        t = Tweet.where("user_id = ?", f).order('created_at').last(100/follows_ids.size).to_a
         t.each do |tweet|
           results.add(tweet)
         end
       end
-      @userTweets = results
+      @userTweets = results.to_a.reverse!
 
       # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
       #@userTweets = Tweet.where("user_id = ?", follows_ids).last(100).reverse.to_a
@@ -40,7 +40,7 @@ get '/' do
 
       erb :homepage
   else
-    @publicFeed = Tweet.last(100).reverse.to_a
+    @publicFeed = Tweet.last(100).order('created_at').to_a
     erb :welcome
   end
 end
@@ -120,7 +120,7 @@ get '/user/:user' do
   if(user.first != nil)
     user_id = user.first.id
     @username = params[:user]
-    @profileFeed = Tweet.where(user_id: user_id).to_a
+    @profileFeed = Tweet.where(user_id: user_id).order('created_at').to_a
     @self = false
     @current_user = current_user
     if @username == session[:username] then
@@ -143,7 +143,7 @@ get '/search' do
   #we're gonna do a full text search
   query_array.each do |q|
     #This is a temporary fix for a large result set for searching
-    t = Tweet.where('text LIKE ?', "%#{q}%").last(100/query_array.size)
+    t = Tweet.where('text LIKE ?', "%#{q}%").order('created_at').last(100/query_array.size)
     t.each do |tweet|
       results.add(tweet)
     end
