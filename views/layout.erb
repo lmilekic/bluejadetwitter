@@ -65,8 +65,10 @@
 </body>
 
 <%if flash[:error] %>
-  <div class="alert alert-danger" role="alert">
-    <%= flash[:error] %>
+  <div class="container">
+    <div class="alert alert-danger" role="alert">
+      <%= flash[:error] %>
+    </div>
   </div>
 <%end%>
 
