@@ -17,7 +17,7 @@
   <div class="container">
 
     <div class="jumbotron">
-      
+      a nice header image
     </div>
     <% if(!@self && @current_user) %>
     <% if(@current_user.followed_users.include?(@other_user)) %>
@@ -90,7 +90,7 @@
                 <div class="media-body">
                   <h4 class="media-heading">
                     <%= User.find(t.user_id).username %>
-                    <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+                    <small><%= t.created_at.strftime("%b %e, %l:%M%P") %></small>
                   </h4>
                   <%= t.text %>
                 </div>

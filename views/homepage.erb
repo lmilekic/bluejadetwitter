@@ -79,7 +79,7 @@
                         <h4 class="media-heading">
                           <% user = User.find(t.user_id).username %> 
                           <a href="/user/<%= user %>">@<%= user %></a>
-                          <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+                          <small><%= t.created_at.strftime("%b %e, %l:%M%P") %></small>
                         </h4>
                         <%= t.text %>
                       </div>
