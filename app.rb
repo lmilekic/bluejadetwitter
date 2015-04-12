@@ -29,7 +29,7 @@ get '/' do
           results.add(tweet)
         end
       end
-      @userTweets = results.to_a.reverse!
+      @userTweets = results.to_a.reverse
 
       # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
       #@userTweets = Tweet.where("user_id = ?", follows_ids).last(100).reverse.to_a
@@ -40,7 +40,7 @@ get '/' do
 
       erb :homepage
   else
-    @publicFeed = Tweet.last(100).order('created_at').to_a
+    @publicFeed = Tweet.last(100).to_a
     erb :welcome
   end
 end
@@ -120,7 +120,7 @@ get '/user/:user' do
   if(user.first != nil)
     user_id = user.first.id
     @username = params[:user]
-    @profileFeed = Tweet.where(user_id: user_id).order('created_at').to_a
+    @profileFeed = Tweet.where(user_id: user_id).order('created_at').to_a.reverse!
     @self = false
     @current_user = current_user
     if @username == session[:username] then
