@@ -63,12 +63,18 @@
   </div>
 
 </body>
-<h3>
+
 <%if flash[:error] %>
-  <%= flash[:error] %>
+  <div class="container">
+    <div class="alert alert-danger" role="alert">
+      <%= flash[:error] %>
+    </div>
+  </div>
 <%end%>
-</h3>
+
+
 <%=yield%>
+
 
 <footer class="footer">
   <nav class="navbar navbar-inverse navbar-fixed-bottom">
