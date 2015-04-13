@@ -18,3 +18,5 @@ gem 'rack-test'
 gem 'rake'
 gem 'faker'
 gem 'json'
+
+gem 'newrelic_rpm'
