@@ -7,6 +7,10 @@ require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
 
+configure :production do
+  require 'newrelic_rpm'
+end
+
 enable :sessions
 
 get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
