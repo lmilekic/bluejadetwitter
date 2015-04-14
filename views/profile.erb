@@ -21,12 +21,12 @@
     </div>
     <% if(!@self && @current_user) %>
     <% if(@current_user.followed_users.include?(@other_user)) %>
-    <form action="/api/v1/unfollow" accept-charset="UTF-8" method="post">
+    <form action="/unfollow" accept-charset="UTF-8" method="post">
       <input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
       <input type="submit" name="toggle-follow" value="Unfollow!" />
     </form>
     <% else %>
-    <form action="/api/v1/follow" accept-charset="UTF-8" method="post">
+    <form action="/follow" accept-charset="UTF-8" method="post">
       <input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
       <input type="submit" name="toggle-follow" value="Follow!" />
     </form>
@@ -50,7 +50,7 @@
 
           <% if @self %>
           <div class="panel-footer">
-            <form action="/api/v1/tweet" method="POST">
+            <form action="/tweet" method="POST">
               <div class="input-group">
 
                 <input type="text" name="tweet_text" placeholder="What is up in the hizzle?" class="form-control">

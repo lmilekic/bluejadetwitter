@@ -7,6 +7,10 @@ require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
 
+configure :production do
+  require 'newrelic_rpm'
+end
+
 enable :sessions
 
 get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
@@ -48,7 +52,7 @@ get '/' do
   end
 end
 
-post '/api/v1/signup' do
+post '/user/register' do
   user = User.create(:username => params[:username],
   :email => params[:email],
   :password => params[:password] )
@@ -62,7 +66,7 @@ post '/api/v1/signup' do
   end
 end
 
-post '/api/v1/login' do
+post '/login' do
   if params[:login].include? "@"
     user = User.where(:email => params[:login], :password => params[:password]).first
   else
@@ -79,7 +83,7 @@ post '/api/v1/login' do
   end
 end
 
-post '/api/v1/tweet' do
+post '/tweet' do
   tweet = Tweet.create(:text => params[:tweet_text],
   :user_id => session[:id],
   :created_at => Time.now) #I think created_at is auto_generated
@@ -92,7 +96,7 @@ post '/api/v1/tweet' do
 end
 
 
-post '/api/v1/follow' do
+post '/follow' do
   stalk = UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => params["other_user_id"])
   if stalk.save
     status 200
@@ -104,7 +108,7 @@ post '/api/v1/follow' do
   end
 end
 
-post '/api/v1/unfollow' do
+post '/unfollow' do
   current_user.user_following_users.where(:user_id => current_user.id, :followed_user_id => params["other_user_id"]).destroy_all
   redirect back
 end
