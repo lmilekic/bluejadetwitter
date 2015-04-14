@@ -7,6 +7,9 @@ require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
 
+# use puma
+configure { set :server, :puma }
+
 enable :sessions
 
 get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
@@ -30,13 +33,6 @@ get '/' do
         end
       end
       @userTweets = results.to_a.reverse
-
-      # THIS NEEDS TO RETURN ALL OF THE PPL YOU ARE FOLLOWINGS'SS'S'S TWEETS
-      #@userTweets = Tweet.where("user_id = ?", follows_ids).last(100).reverse.to_a
-      #this is a temporary fix:
-      #@userTweets = []
-      #@userTweets << Tweet.find(100176)
-      #puts @userTweets
 
       erb :homepage
   else
