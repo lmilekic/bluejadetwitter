@@ -20,3 +20,7 @@ gem 'faker'
 gem 'json'
 
 gem 'newrelic_rpm'
+
+# NEWWEB
+gem 'puma'
+gem 'foreman'
