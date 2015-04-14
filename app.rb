@@ -15,6 +15,9 @@ end
 configure { set :server, :puma }
 
 enable :sessions
+before do
+  cache_control :public
+end
 
 get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
   "loaderio-67d68465390333f8ce3945c9399a6717"
