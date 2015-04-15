@@ -2,10 +2,10 @@ require 'sinatra'
 require 'sinatra/flash'
 require 'sinatra/activerecord'
 require './config/environments'
-require 'json'
 require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
+require_relative 'api'
 
 configure :production do
   require 'newrelic_rpm'
