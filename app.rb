@@ -145,7 +145,7 @@ get '/search' do
   @tweet_results = Set.new
   #we're gonna do a full text search
   query_array.each do |q|
-    This is a temporary fix for a large result set for searching
+    #This is a temporary fix for a large result set for searching
     t = Tweet.where('text LIKE ?', "%#{q}%").order('created_at').last(100/query_array.size)
     t.each do |tweet|
       @tweet_results.add(tweet)
