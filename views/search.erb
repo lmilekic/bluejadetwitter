@@ -44,7 +44,7 @@
 				    </div>
 				    <div class="media-body">
 				      <h4 class="media-heading">
-				        <a href="/user/<%= user %>"><%= User.find(user.id).username %></a>
+				        <a href="/user/<%= "#{username}" %>"><%= "#{username}" %></a>
 				      </h4>
 				        <small>joined <%= user.created_at.strftime("%a %e, %l:%M%P") %></small>
 				    </div>
