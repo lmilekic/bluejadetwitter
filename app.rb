@@ -170,6 +170,7 @@ end
 get '/logout' do
   session[:id] = nil
   redirect to('/')
+  @user = nil
 end
 
 not_found do
@@ -182,7 +183,11 @@ private
 def current_user
   if(session[:id].nil?)
     false
+  elsif @user.nil?
+    puts "SHOULD DO THIS ONCE"
+    @user = User.where(:id => session[:id]).first
   else
-    User.where(:id => session[:id]).first
+    @user
   end
+  
 end
