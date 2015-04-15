@@ -2,7 +2,8 @@ require File.dirname(__FILE__) + '/../app'
 require 'rspec'
 require 'rack/test'
 
-set :environment, "test"
+#this isn't doing anything...
+set :environment, 'test'
 
 def app
     Sinatra::Application
