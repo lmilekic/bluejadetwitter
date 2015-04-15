@@ -3,7 +3,7 @@ require 'rspec'
 require 'rack/test'
 
 #this isn't doing anything...
-set :environment, 'test'
+set :environment, :test
 
 def app
     Sinatra::Application
