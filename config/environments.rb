@@ -11,6 +11,10 @@ configure :production do
   ActiveRecord::Base.establish_connection(databases[env])
 end
 
-configure :development, :test do
-  puts "[development or test environment]"
+configure :development do
+  puts "[development environment]"
+end
+
+configure :test do
+  puts "[test environment]"
 end
