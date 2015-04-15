@@ -2,8 +2,8 @@ require File.dirname(__FILE__) + '/../app'
 require 'rspec'
 require 'rack/test'
 
-set :environment, :test
-#Test::Unit::TestCase.send :include, Rack::Test::Methods
+#this isn't doing anything...
+set :environment, 'test'
 
 def app
     Sinatra::Application
@@ -16,9 +16,10 @@ describe "app" do
     Sinatra::Application
   end
 
-  # before(:each) do
-  #   User.delete_all
-  # end
+  before(:each) do
+    User.delete_all
+    Tweet.delete_all
+  end
 
   describe "Creating a user and checking if it is created..." do
     before(:each) do
@@ -30,25 +31,18 @@ describe "app" do
 
     it "should return a user by name" do
       user = User.where(username: "paul")
-      user[0].username.should == "paul"
+      expect(user[0].username).to eq("paul")
     end
 
     it "should return a user with an email" do
       user = User.where(username: "paul")
-      user[0].email.should == "paul@pauldix.net"
+      expect(user[0].email).to eq("paul@pauldix.net")
     end
 
-    # it "should not return a user's password" do
-    #   get '/api/v1/users/paul'
-    #   last_response.should be_ok
-    #   attributes = JSON.parse(last_response.body)
-    #   attributes.should_not have_key("password")
-    # end
-
-     it "should return a 404 for a user that doesn't exist" do
-       get "/profile/shouldnothavethis"
-       last_response.status.should == 404
-     end
+    it "should return a 404 for a user that doesn't exist" do
+      get "/profile/shouldnothavethis"
+      expect(last_response.status).to eq(404)
+    end
   end
 
   describe "Creating a tweet and checking if it is created..." do
@@ -60,26 +54,19 @@ describe "app" do
 
     it "should return a tweet by its text" do
       tweet = Tweet.where(text: "This is my tweet!")
-      tweet[0].text.should == "This is my tweet!"
+      expect(tweet[0].text).to eq("This is my tweet!")
     end
 
     it "should return a user with an email" do
       tweet = Tweet.where(user_id: 1)
-      tweet[0].user_id.should == 1
+      expect(tweet[0].user_id).to eq(1)
     end
 
     it "should not allow tweets to be longer than 140 characters" do
       tweet = Tweet.new(:text => "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
-      :user_id => 1)
+        :user_id => 1)
       expect(tweet.save).to eq(false)
     end
-
-    # it "should not return a user's password" do
-    #   get '/api/v1/users/paul'
-    #   last_response.should be_ok
-    #   attributes = JSON.parse(last_response.body)
-    #   attributes.should_not have_key("password")
-    # end
   end
 
 end
