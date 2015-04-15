@@ -6,6 +6,7 @@ require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
 require_relative 'api'
+require_relative 'test_user'
 
 configure :production do
   require 'newrelic_rpm'
@@ -165,7 +166,6 @@ get '/search' do
 
   erb :search
 end
-
 
 get '/logout' do
   session[:id] = nil
