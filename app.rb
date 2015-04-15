@@ -9,10 +9,11 @@ require_relative 'api'
 
 configure :production do
   require 'newrelic_rpm'
+  # use puma
+  configure { set :server, :puma }
 end
 
-# use puma
-configure { set :server, :puma }
+
 
 enable :sessions
 before do
@@ -58,6 +59,7 @@ post '/user/register' do
   if user.save
     session[:id] = user.id
     session[:username] = user.username
+    UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => current_user.id)
     redirect '/user/' + user.username
   else
     flash[:error] = "username or email is already taken"
@@ -176,6 +178,7 @@ not_found do
 end
 
 private
+#I think this is slowing us down
 def current_user
   if(session[:id].nil?)
     false
