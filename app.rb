@@ -2,6 +2,8 @@ require 'sinatra'
 require 'sinatra/flash'
 require 'sinatra/activerecord'
 require './config/environments'
+require 'hiredis'
+require 'redis'
 require_relative 'models/user'
 require_relative 'models/tweet'
 require_relative 'models/user_following_user'
@@ -15,14 +17,20 @@ configure :production do
 end
 
 
-
 enable :sessions
 before do
   cache_control :public
+  @redis ||= Redis.new(:driver => :hiredis)
 end
 
 get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
   "loaderio-67d68465390333f8ce3945c9399a6717"
+end
+
+get '/luka_test' do
+  #@redis.rpush('hello', 'this is some text')
+
+  arr.first.class.to_s
 end
 
 get '/' do
@@ -90,6 +98,7 @@ post '/tweet' do
   :user_id => session[:id],
   :created_at => Time.now) #I think created_at is auto_generated
   if tweet.save
+    addToQueue(tweet)
     redirect back #refreshes
   else
     flash[:error] = "Tweet was unable to be saved or something!"
@@ -178,8 +187,7 @@ not_found do
   erb :oops
 end
 
-private
-#I think this is slowing us down
+
 def current_user
   if(session[:id].nil?)
     false
@@ -189,5 +197,18 @@ def current_user
   else
     @user
   end
-  
+end
+def addToQueue(tweet)
+  @redis.lpush("top100", tweet.to_json)
+  if(@redis.lrange('top100', 0, -1).size > 100) #if redis top 100 has more than 100 tweets
+    while(@redis.lrange('top100', 0, -1).size > 100)
+      @redis.rpop('top100')
+    end
+  end
+end
+#returns an array of hashes containing tweet data
+def getRedisQueue
+  arr = @redis.lrange('top100', 0, -1)
+  arr.map!{|el| JSON.parse(el)}
+  arr
 end
