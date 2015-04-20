@@ -56,7 +56,7 @@ get '/' do
     #this needs to be fixed:
     # doesnt' actually display latest 100 created tweets, but just the latest 100 IDs
     # not actually a problem irl but is problem with seed data
-    @publicFeed = Tweet.order('created_at').last(100).to_a.reverse
+    @publicFeed = Tweet.last(100).to_a.reverse
     erb :welcome
   end
 end
