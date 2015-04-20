@@ -15,10 +15,10 @@ configure :production do
   # use puma
   configure { set :server, :puma }
   uri = URI.parse(ENV["REDISTOGO_URL"])
-  @redis ||= Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+  REDIS ||= Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 end
 configure :development do
-  @redis ||= Redis.new(:driver => :hiredis)
+  REDIS ||= Redis.new(:driver => :hiredis)
 end
 enable :sessions
 before do
@@ -204,16 +204,16 @@ def current_user
   end
 end
 def addToQueue(tweet)
-  @redis.lpush("top100", tweet.to_json)
+  REDIS.lpush("top100", tweet.to_json)
 end
 #returns an array of hashes containing tweet data
 def getRedisQueue
-  if(@redis.lrange('top100', 0, -1).size > 100) #if redis top 100 has more than 100 tweets
-    while(@redis.lrange('top100', 0, -1).size > 100)
-      @redis.rpop('top100')
+  if(REDIS.lrange('top100', 0, -1).size > 100) #if redis top 100 has more than 100 tweets
+    while(REDIS.lrange('top100', 0, -1).size > 100)
+      REDIS.rpop('top100')
     end
   end
-  arr = @redis.lrange('top100', 0, -1)
+  arr = REDIS.lrange('top100', 0, -1)
   arr.map!{|el| JSON.parse(el)}
   arr
 end
