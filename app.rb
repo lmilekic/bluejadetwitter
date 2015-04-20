@@ -14,13 +14,17 @@ configure :production do
   require 'newrelic_rpm'
   # use puma
   configure { set :server, :puma }
+  uri = URI.parse(ENV["REDISTOGO_URL"])
+  @redis ||= Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 end
-
-
+configure :development do
+  @redis ||= Redis.new(:driver => :hiredis)
+end
 enable :sessions
 before do
   cache_control :public
-  @redis ||= Redis.new(:driver => :hiredis)
+
+  #redis?
 end
 
 get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
