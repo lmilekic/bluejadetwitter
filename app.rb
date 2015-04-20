@@ -28,35 +28,36 @@ get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
 end
 
 get '/luka_test' do
-  #@redis.rpush('hello', 'this is some text')
-
-  arr.first.class.to_s
+  #puts postData.body
+  arr = getRedisQueue
+  arr.to_s
 end
 
 get '/' do
   if(current_user)
 
-      follows = current_user.followed_users.to_a
-      follows_ids = follows.map{|x| x.id}
-      puts "follows = :" + follows.to_s
-      puts "follows_ids = " + follows_ids.to_s
-      results = Set.new
-      #we're gonna do a full text search
-      follows_ids.each do |f|
-        #This is a very hacky fix to allow following more than one person
-        t = Tweet.where("user_id = ?", f).order('created_at').last(100/follows_ids.size).to_a
-        t.each do |tweet|
-          results.add(tweet)
-        end
+    follows = current_user.followed_users.to_a
+    follows_ids = follows.map{|x| x.id}
+    puts "follows = :" + follows.to_s
+    puts "follows_ids = " + follows_ids.to_s
+    results = Set.new
+    #we're gonna do a full text search
+    follows_ids.each do |f|
+      #This is a very hacky fix to allow following more than one person
+      t = Tweet.where("user_id = ?", f).order('created_at').last(100/follows_ids.size).to_a
+      t.each do |tweet|
+        results.add(tweet)
       end
-      @userTweets = results.to_a.reverse
+    end
+    @userTweets = results.to_a.reverse
 
-      erb :homepage
+    erb :homepage
   else
     #this needs to be fixed:
     # doesnt' actually display latest 100 created tweets, but just the latest 100 IDs
     # not actually a problem irl but is problem with seed data
-    @publicFeed = Tweet.last(100).to_a.reverse
+    #@publicFeed = Tweet.last(100).to_a.reverse
+    @publicFeed = getRedisQueue
     erb :welcome
   end
 end
@@ -200,14 +201,14 @@ def current_user
 end
 def addToQueue(tweet)
   @redis.lpush("top100", tweet.to_json)
+end
+#returns an array of hashes containing tweet data
+def getRedisQueue
   if(@redis.lrange('top100', 0, -1).size > 100) #if redis top 100 has more than 100 tweets
     while(@redis.lrange('top100', 0, -1).size > 100)
       @redis.rpop('top100')
     end
   end
-end
-#returns an array of hashes containing tweet data
-def getRedisQueue
   arr = @redis.lrange('top100', 0, -1)
   arr.map!{|el| JSON.parse(el)}
   arr

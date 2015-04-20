@@ -12,13 +12,13 @@
     <meta name="description" content="">
     <meta name="author" content="Clara Nice and a little bit of Calvin Wang">
     <link rel="icon" href="../../favicon.ico">
-    
+
 </head>
 
 <body>
 
 	<div class="container">
-      
+
       <div class="jumbotron" id="sign-up">
         <h1>Welcome to BlueJade! </h1>
         <p class="lead">
@@ -37,17 +37,17 @@
 
               <div class="media">
                 <div class="media-left">
-                  <a href="#"> 
+                  <a href="#">
                     <img class="media-object" src='/pngs/<%= count %>.png' height="50">
                   </a>
                 </div>
                 <div class="media-body">
                   <h4 class="media-heading">
-                    <% user = User.find(t.user_id).username %> 
+                    <% user = User.find(t['user_id']).username %>
                     <a href="/user/<%= user %>"><%= user %></a>
-                    <small><%= t.created_at.strftime("%b %e, %l:%M%P") %></small>
+                    <small><%= Time.new(t['created_at']).strftime("%b %e, %l:%M%P") %></small>
                   </h4>
-                  <%= t.text %>
+                  <%= t['text'] %>
                 </div>
               </div>
               <% count = count + 1 %>
@@ -68,7 +68,7 @@
             </div>
             <p> <button type="submit" class="btn btn-lg btn-primary">Log in</button> </p>
           </form>
-          
+
           <h2 class="text-muted">New here? <small>Registering is easy!</small></h2>
           <form action="/user/register" method="POST" >
             <div class="form-group">
@@ -85,7 +85,7 @@
         </div>
 
       </div>
-      
+
     </div>
 </body>
 
