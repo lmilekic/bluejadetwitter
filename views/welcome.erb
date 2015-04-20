@@ -43,7 +43,7 @@
                 </div>
                 <div class="media-body">
                   <h4 class="media-heading">
-                    <% user = User.find(t['user_id']).username %>
+                    <% user = t['owner'] %>
                     <a href="/user/<%= user %>"><%= user %></a>
                     <small><%= DateTime.parse(t['created_at']).strftime("%b %e, %l:%M%P") %></small>
                   </h4>

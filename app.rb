@@ -205,7 +205,9 @@ def current_user
   end
 end
 def addToQueue(tweet)
-  REDIS.lpush("top100", tweet.to_json)
+  tweet_hash = tweet.serializable_hash
+  tweet_hash['owner'] = current_user.username
+  REDIS.lpush("top100", tweet_hash.to_json)
 end
 #returns an array of hashes containing tweet data
 def getRedisQueue
