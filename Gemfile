@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
+#if rubygems is down
+#source 'http://production.cf.rubygems.org'
 gem 'sinatra'
 
 # Heroku can't install sqlite3, so have it use postgres
@@ -24,3 +26,7 @@ gem 'newrelic_rpm'
 # NEWWEB
 gem 'puma'
 gem 'foreman'
+
+#REDIS
+gem 'hiredis'
+gem 'redis'
