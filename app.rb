@@ -18,6 +18,7 @@ configure :production do
   REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password, :driver => :hiredis)
 end
 configure :development do
+  puts "development"
   REDIS = Redis.new(:driver => :hiredis)
 end
 enable :sessions
