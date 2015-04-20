@@ -15,10 +15,10 @@ configure :production do
   # use puma
   configure { set :server, :puma }
   uri = URI.parse(ENV["REDISTOGO_URL"])
-  REDIS ||= Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+  REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password, :driver => :hiredis)
 end
 configure :development do
-  REDIS ||= Redis.new(:driver => :hiredis)
+  REDIS = Redis.new(:driver => :hiredis)
 end
 enable :sessions
 before do

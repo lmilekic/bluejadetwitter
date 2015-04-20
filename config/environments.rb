@@ -10,8 +10,6 @@ configure :production do
   env = ENV["SINATRA_ENV"] || "production"
   databases = YAML.load(ERB.new(File.read("config/database.yml")).result)
   ActiveRecord::Base.establish_connection(databases[env])
-  uri = URI.parse(ENV["REDISTOGO_URL"])
-  REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 end
 
 configure :development do
