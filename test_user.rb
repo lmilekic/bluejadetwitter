@@ -5,6 +5,7 @@ get '/test_tweet' do
 	  	:user_id => 1011,
 	  	:created_at => Time.now))
 		"created tweet"
+	    addToQueue(tweet)
 	else
 		"error creating tweet"
 	end
