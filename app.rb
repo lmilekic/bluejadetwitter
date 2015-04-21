@@ -18,7 +18,6 @@ configure :production do
   REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password, :driver => :hiredis)
 end
 configure :development do
-  puts "development"
   REDIS = Redis.new(:driver => :hiredis)
 end
 enable :sessions
@@ -218,5 +217,6 @@ def getRedisQueue
   end
   arr = REDIS.lrange('top100', 0, -1)
   arr.map!{|el| JSON.parse(el)}
+
   arr
 end
