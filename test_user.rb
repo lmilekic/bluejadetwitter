@@ -5,7 +5,7 @@ get '/test_tweet' do
 		  	:user_id => 1011,
 		  	:created_at => Time.now))
 	if (tweet)
-		"created tweet: #{tweet.text}"
+		"created tweet"
 		tweet_hash = tweet.serializable_hash
 		tweet_hash['owner'] = "test_user"
 		REDIS.lpush("top100", tweet_hash.to_json)

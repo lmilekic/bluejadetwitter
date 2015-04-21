@@ -11,7 +11,7 @@ require_relative 'api'
 require_relative 'test_user'
 
 configure :production do
-  require 'newrelic_rpm'
+  #require 'newrelic_rpm'
   # use puma
   configure { set :server, :puma }
   uri = URI.parse(ENV["REDISTOGO_URL"])

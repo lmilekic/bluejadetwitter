@@ -32,13 +32,13 @@
           <h2 class="text-muted">Public Feed</h2>
           <div class="panel panel-primary">
             <div class="panel-body" style="max-height: 500px; overflow-y: scroll;">
-              <% count = 0 %>
+              <% #count = 0 %>
               <% @publicFeed.each do |t| %>
 
               <div class="media">
                 <div class="media-left">
                   <a href="#">
-                    <img class="media-object" src='/pngs/<%= count %>.png' height="50">
+                    <!--<img class="media-object" src='/pngs/<%= count %>.png' height="50">-->
                   </a>
                 </div>
                 <div class="media-body">
@@ -50,7 +50,7 @@
                   <%= t['text'] %>
                 </div>
               </div>
-              <% count = count + 1 %>
+              <% #count = count + 1 %>
               <% end %>
 
             </div>
