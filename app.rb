@@ -6,7 +6,7 @@ require 'hiredis'
 require 'redis'
 require_relative 'models/user'
 require_relative 'models/tweet'
-require_relative 'models/user_following_user'
+require_relative 'models/follow_connection'
 require_relative 'api'
 require_relative 'test_user'
 
@@ -67,7 +67,7 @@ post '/user/register' do
   if user.save
     session[:id] = user.id
     session[:username] = user.username
-    UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => current_user.id)
+    FollowConnection.create(:user_id => current_user.id, :followed_user_id => current_user.id)
     redirect '/user/' + user.username
   else
     flash[:error] = "username or email is already taken"
@@ -107,7 +107,7 @@ end
 
 
 post '/follow' do
-  stalk = UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => params["other_user_id"])
+  stalk = FollowConnection.create(:user_id => current_user.id, :followed_user_id => params["other_user_id"])
   if stalk.save
     status 200
     redirect back
@@ -119,7 +119,7 @@ post '/follow' do
 end
 
 post '/unfollow' do
-  current_user.user_following_users.where(:user_id => current_user.id, :followed_user_id => params["other_user_id"]).destroy_all
+  current_user.follow_connections.where(:user_id => current_user.id, :followed_user_id => params["other_user_id"]).destroy_all
   redirect back
 end
 

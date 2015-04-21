@@ -43,7 +43,7 @@ end
 File.foreach( 'seeds/follows.csv' ) do |follow|
 	flw = follow.split(',')
 
-		stalk = UserFollowingUser.create(:user_id => flw[0],
+		stalk = FollowConnection.create(:user_id => flw[0],
 							:followed_user_id => flw[1])
 		if stalk.save
 
