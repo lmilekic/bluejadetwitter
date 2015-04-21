@@ -7,7 +7,7 @@ get '/test_tweet' do
 	if (tweet)
 		"created tweet: #{tweet.text}"
 		tweet_hash = tweet.serializable_hash
-		tweet_hash['owner'] = current_user.username
+		tweet_hash['owner'] = "test_user"
 		REDIS.lpush("top100", tweet_hash.to_json)
 	else
 		"error creating tweet"
