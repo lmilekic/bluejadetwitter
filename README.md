@@ -3,61 +3,26 @@ This is our nanotwitter project! The creators of this project are Calvin Wang, Z
 Sticking with RESTful design we are using HTTP requests to process messages whenever a user wants to do something. 
 
 ## Routes Explanation
-require 'sinatra'
-require 'sinatra/flash'
-require 'sinatra/activerecord'
-require './config/environments'
-require 'hiredis'
-require 'redis'
-require_relative 'models/user'
-require_relative 'models/tweet'
-require_relative 'models/user_following_user'
-require_relative 'api'
-require_relative 'test_user'
 
-configure :production do
-  require 'newrelic_rpm'
-  # use puma
-  configure { set :server, :puma }
-  uri = URI.parse(ENV["REDISTOGO_URL"])
-  REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password, :driver => :hiredis)
-end
-configure :development do
-  puts "development"
-  REDIS = Redis.new(:driver => :hiredis)
-end
-enable :sessions
-before do
-  cache_control :public
+get '/' - This returns either the welcome page or the homepage of BlueJade.  The welcome page is displayed when there is no user logged in.  This page gives the ability to login and create a new account.  In addition, it displays the latest 100 tweets made by anyone using BlueJade.  The welcome page displays the last hundred tweets by users the logged in user is following.  It also gives the logged in user the ability to tweet.
 
-  #redis?
-end
+post '/user/register' - This registers a user into our database and sets the current session (cookies) to that user.  This then sends the user to their profile page or, if unsuccessful, back to the homepage.
 
-get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
-  "loaderio-67d68465390333f8ce3945c9399a6717"
-end
+post '/login' -
 
-get '/' do
+post '/tweet' 
 
-post '/user/register' do
+post '/follow' 
 
-post '/login' do
+post '/unfollow' 
 
-post '/tweet' do
+get '/user' 
 
-post '/follow' do
+get '/user/:user' 
 
-post '/unfollow' do
+get '/search'
 
-get '/user' do
-
-get '/user/:user' do
-
-
-get '/search' do
-
-
-get '/logout' do
+get '/logout' 
 
 
 ## schemas
