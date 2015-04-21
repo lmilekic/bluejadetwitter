@@ -5,8 +5,10 @@ get '/test_tweet' do
 		  	:user_id => 1011,
 		  	:created_at => Time.now))
 	if (tweet)
-		"created tweet"
-	    addToQueue(tweet)
+		"created tweet: #{tweet.text}"
+		tweet_hash = tweet.serializable_hash
+		tweet_hash['owner'] = current_user.username
+		REDIS.lpush("top100", tweet_hash.to_json)
 	else
 		"error creating tweet"
 	end
