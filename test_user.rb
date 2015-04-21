@@ -1,9 +1,10 @@
 require 'faker'
 get '/test_tweet' do
-	if (Tweet.create(
-	  	:text => Faker::Hacker.say_something_smart,
-	  	:user_id => 1011,
-	  	:created_at => Time.now))
+	tweet = (Tweet.create(
+		  	:text => Faker::Hacker.say_something_smart,
+		  	:user_id => 1011,
+		  	:created_at => Time.now))
+	if (tweet)
 		"created tweet"
 	    addToQueue(tweet)
 	else
