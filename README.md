@@ -26,7 +26,7 @@ id | integer
 user_id | integer
 text | text
 
-__user_following_users__
+__follow_connections__
 _many_to_many_
 
 field | data type

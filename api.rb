@@ -71,7 +71,7 @@ get '/api/v1/users/:uid/followers' do
 	rescue
 		error 404, {:error => "user not found"}.to_json
 	else
-		followers = UserFollowingUser.where("followed_user_id = ?", user.id).to_a
+		followers = FollowConnection.where("followed_user_id = ?", user.id).to_a
 		f_ids = Array.new
 
 		followers.each do |user|
