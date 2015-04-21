@@ -31,12 +31,6 @@ get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
   "loaderio-67d68465390333f8ce3945c9399a6717"
 end
 
-get '/luka_test' do
-  #puts postData.body
-  arr = getRedisQueue
-  arr.to_s
-end
-
 get '/' do
   if(current_user)
 
