@@ -200,6 +200,8 @@ end
 def addToQueue(tweet)
   tweet_hash = tweet.serializable_hash
   tweet_hash['owner'] = current_user.username
+  puts 'HASH IS ' + tweet_hash.to_s
+  tweet_hash['display_date'] = DateTime.parse(tweet_hash['created_at'].to_s).strftime("%b %e, %l:%M%P")
   REDIS.lpush("top100", tweet_hash.to_json)
 end
 #returns an array of hashes containing tweet data
