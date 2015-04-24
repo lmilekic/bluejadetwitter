@@ -9,176 +9,24 @@ require_relative 'models/tweet'
 require_relative 'models/user_following_user'
 require_relative 'api'
 require_relative 'test_user'
+require_relative 'user_actions'
+require_relative 'routes'
 
 configure :production do
   require 'newrelic_rpm'
-  # use puma
   configure { set :server, :puma }
   uri = URI.parse(ENV["REDISTOGO_URL"])
   REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password, :driver => :hiredis)
 end
+
 configure :development do
   REDIS = Redis.new(:driver => :hiredis)
 end
+
 enable :sessions
+
 before do
   cache_control :public
-
-  #redis?
-end
-
-get '/loaderio-67d68465390333f8ce3945c9399a6717/' do
-  "loaderio-67d68465390333f8ce3945c9399a6717"
-end
-
-get '/' do
-  if(current_user)
-
-    follows = current_user.followed_users.to_a
-    follows_ids = follows.map{|x| x.id}
-    puts "follows = :" + follows.to_s
-    puts "follows_ids = " + follows_ids.to_s
-    results = Set.new
-    #we're gonna do a full text search
-    follows_ids.each do |f|
-      #This is a very hacky fix to allow following more than one person
-      t = Tweet.where("user_id = ?", f).order('created_at').last(100/follows_ids.size).to_a
-      t.each do |tweet|
-        results.add(tweet)
-      end
-    end
-    @userTweets = results.to_a.reverse
-
-    erb :homepage
-  else
-    #this needs to be fixed:
-    # doesnt' actually display latest 100 created tweets, but just the latest 100 IDs
-    # not actually a problem irl but is problem with seed data
-    #@publicFeed = Tweet.last(100).to_a.reverse
-    @publicFeed = getRedisQueue
-    erb :welcome
-  end
-end
-
-post '/user/register' do
-  user = User.create(:username => params[:username],
-  :email => params[:email],
-  :password => params[:password] )
-  if user.save
-    session[:id] = user.id
-    session[:username] = user.username
-    UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => current_user.id)
-    redirect '/user/' + user.username
-  else
-    flash[:error] = "username or email is already taken"
-    redirect '/'
-  end
-end
-
-post '/login' do
-  if params[:login].include? "@"
-    user = User.where(:email => params[:login], :password => params[:password]).first
-  else
-    user = User.where(:username => params[:login], :password => params[:password]).first
-  end
-
-  if(user)
-    session[:id] = user.id
-    session[:username] = user.username
-    redirect '/'
-  else
-    flash[:error] = "There was an error with login"
-    redirect '/'
-  end
-end
-
-post '/tweet' do
-  tweet = Tweet.create(:text => params[:tweet_text],
-  :user_id => session[:id],
-  :created_at => Time.now) #I think created_at is auto_generated
-  if tweet.save
-    addToQueue(tweet)
-    redirect back #refreshes
-  else
-    flash[:error] = "Tweet was unable to be saved or something!"
-    redirect back
-  end
-end
-
-
-post '/follow' do
-  stalk = UserFollowingUser.create(:user_id => current_user.id, :followed_user_id => params["other_user_id"])
-  if stalk.save
-    status 200
-    redirect back
-  else
-    status 400
-    flash[:error] = "Following didn't work!"
-    redirect back
-  end
-end
-
-post '/unfollow' do
-  current_user.user_following_users.where(:user_id => current_user.id, :followed_user_id => params["other_user_id"]).destroy_all
-  redirect back
-end
-
-get '/user' do
-  if session[:username] != nil
-    redirect '/user/' + session[:username]
-  else
-    redirect '/'
-  end
-end
-
-get '/user/:user' do
-  #For listing followers/followees we should probably make it so it only calculates it once and changes when you unfollow someone
-  user = User.where(username: params[:user])
-  if(user.first != nil)
-    user_id = user.first.id
-    @username = params[:user]
-    @profileFeed = Tweet.where(user_id: user_id).order('created_at').to_a.reverse!
-    @self = false
-    @current_user = current_user
-    if @username == session[:username] then
-      @self = true
-    else
-      @other_user = user.first
-    end
-    erb :profile
-  else
-    status 404
-    #"User's profile unable to be displayed. ｡゜(｀Д´)゜｡"
-  end
-end
-
-
-get '/search' do
-  query = params["q"]
-  query_array = query.split
-  @tweet_results = Set.new
-  #we're gonna do a full text search
-  query_array.each do |q|
-    #This is a temporary fix for a large result set for searching
-    t = Tweet.where('text LIKE ?', "%#{q}%").order('created_at').last(100/query_array.size)
-    t.each do |tweet|
-      @tweet_results.add(tweet)
-    end
-  end
-
-  @user_results = Set.new
-  u = User.where('username = ?', "#{query}")
-  u.each do |user|
-    @user_results.add(user)
-  end
-
-  erb :search
-end
-
-get '/logout' do
-  session[:id] = nil
-  redirect to('/')
-  @user = nil
 end
 
 not_found do
@@ -188,7 +36,7 @@ end
 
 
 def current_user
-  if(session[:id].nil?)
+  if (session[:id].nil?)
     false
   elsif @user.nil?
     puts "SHOULD DO THIS ONCE"
@@ -197,20 +45,24 @@ def current_user
     @user
   end
 end
+
 def addToQueue(tweet)
   tweet_hash = tweet.serializable_hash
   tweet_hash['owner'] = current_user.username
   REDIS.lpush("top100", tweet_hash.to_json)
 end
+
 #returns an array of hashes containing tweet data
 def getRedisQueue
-  if(REDIS.lrange('top100', 0, -1).size > 100) #if redis top 100 has more than 100 tweets
-    while(REDIS.lrange('top100', 0, -1).size > 100)
+  # if redis top 100 has more than 100 tweets
+  if (REDIS.lrange('top100', 0, -1).size > 100)
+    while (REDIS.lrange('top100', 0, -1).size > 100)
       REDIS.rpop('top100')
     end
   end
+
   arr = REDIS.lrange('top100', 0, -1)
-  arr.map!{|el| JSON.parse(el)}
+  arr.map!{ |el| JSON.parse(el) }
 
   arr
 end
