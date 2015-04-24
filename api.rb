@@ -2,7 +2,7 @@ require 'json'
 
 get '/api/v1/tweets/:tid' do
 	if (params[:tid] == "recent")
-		begin 
+		begin
 			tweets = Tweet.last(100).reverse
 		rescue
 			error 404, {:error => "tweets not found"}.to_json
@@ -81,4 +81,8 @@ get '/api/v1/users/:uid/followers' do
 		content_type :json
 		f_ids.to_json
 	end
+end
+
+get '/api/v1/top100' do
+	getRedisQueue.to_json
 end
