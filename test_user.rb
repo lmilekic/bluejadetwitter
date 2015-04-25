@@ -32,7 +32,7 @@ get '/test_follow' do
 end
 
 get '/test_user' do
-	follows = User.find(1011).followed_users.to_a
+	follows = User.find(1002).followed_users.to_a
     follows_ids = follows.map{ |x| x.id }
     results = Set.new
 
