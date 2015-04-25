@@ -2,7 +2,7 @@ require 'faker'
 get '/test_tweet' do
 	tweet = (Tweet.create(
 		  	:text => Faker::Hacker.say_something_smart,
-		  	:user_id => 1011,
+		  	:user_id => 1002,
 		  	:created_at => Time.now))
 	if (tweet)
 		tweet_hash = tweet.serializable_hash
@@ -16,14 +16,14 @@ end
 
 get '/test_follow' do
 	id = Random.rand(User.count)
-	if (FollowConnection.exists?(user_id: 1011, followed_user_id: id))
-		if (FollowConnection.where(:user_id => 1011, :followed_user_id => id).destroy_all)
+	if (FollowConnection.exists?(user_id: 1002, followed_user_id: id))
+		if (FollowConnection.where(:user_id => 1002, :followed_user_id => id).destroy_all)
 			"unfollowed #{id}"
 		else
 			"unfollow error with #{id}"
 		end
 	else
-		if (FollowConnection.create(:user_id => 1011, :followed_user_id => id))
+		if (FollowConnection.create(:user_id => 1002, :followed_user_id => id))
 			"follow relation created with #{id}"
 		else
 			"follow error with #{id}"
@@ -32,7 +32,7 @@ get '/test_follow' do
 end
 
 get '/reset' do
-	if (Tweet.where(user_id: 1011).destroy_all) && (FollowConnection.where(user_id: 1011).destroy_all)
+	if (Tweet.where(user_id: 1002).destroy_all) && (FollowConnection.where(user_id: 1002).destroy_all)
 		"reset test user's stuff"
 	else
 		"error resetting"
