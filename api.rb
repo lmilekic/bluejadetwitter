@@ -2,7 +2,7 @@ require 'json'
 
 get '/api/v1/tweets/:tid' do
 	if (params[:tid] == "recent")
-		begin 
+		begin
 			tweets = Tweet.last(100).reverse
 		rescue
 			error 404, {:error => "tweets not found"}.to_json
@@ -71,7 +71,7 @@ get '/api/v1/users/:uid/followers' do
 	rescue
 		error 404, {:error => "user not found"}.to_json
 	else
-		followers = UserFollowingUser.where("followed_user_id = ?", user.id).to_a
+		followers = FollowConnection.where("followed_user_id = ?", user.id).to_a
 		f_ids = Array.new
 
 		followers.each do |user|
@@ -81,4 +81,8 @@ get '/api/v1/users/:uid/followers' do
 		content_type :json
 		f_ids.to_json
 	end
+end
+
+get '/api/v1/top100' do
+	getRedisQueue.to_json
 end

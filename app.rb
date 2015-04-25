@@ -6,7 +6,7 @@ require 'hiredis'
 require 'redis'
 require_relative 'models/user'
 require_relative 'models/tweet'
-require_relative 'models/user_following_user'
+require_relative 'models/follow_connection'
 require_relative 'api'
 require_relative 'test_user'
 require_relative 'user_actions'
@@ -49,6 +49,8 @@ end
 def addToQueue(tweet)
   tweet_hash = tweet.serializable_hash
   tweet_hash['owner'] = current_user.username
+  puts 'HASH IS ' + tweet_hash.to_s
+  tweet_hash['display_date'] = DateTime.parse(tweet_hash['created_at'].to_s).strftime("%b %e, %l:%M%P")
   REDIS.lpush("top100", tweet_hash.to_json)
 end
 

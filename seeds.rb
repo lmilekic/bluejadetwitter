@@ -42,7 +42,7 @@ end
 test_users.each do |user|
 	to_follow = test_users.sample.id
 
-	stalk = UserFollowingUser.create(:user_id => user.id,
+	stalk = FollowConnection.create(:user_id => user.id,
  										:followed_user_id => to_follow)
 	if stalk.save
 		"user #{user.id} is now following #{to_follow}"

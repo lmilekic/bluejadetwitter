@@ -21,7 +21,7 @@ describe "app" do
     before(:each) do
       Tweet.delete_all
       User.delete_all
-      UserFollowingUser.delete_all
+      FollowConnection.delete_all
     end
 
     describe "GET on /api/v1/tweets/:tid" do
@@ -148,7 +148,7 @@ describe "app" do
     describe "GET on /api/v1/users/:uid/followers" do
 
       before(:each) do
-        #UserFollowingUser.create(
+        #FollowConnection.create(
         #  :id => 0,
         #  :user_id => 0,
         #  :followed_user_id => 1)

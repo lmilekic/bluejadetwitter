@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20150416000000) do
 
   add_index "tweets", ["created_at"], name: "index_tweets_on_created_at"
 
-  create_table "user_following_users", force: :cascade do |t|
+  create_table "follow_connections", force: :cascade do |t|
     t.integer "user_id"
     t.integer "followed_user_id"
   end
