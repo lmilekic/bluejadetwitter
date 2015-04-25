@@ -31,6 +31,21 @@ get '/test_follow' do
 	end
 end
 
+get '/test_user' do
+	follows = User.find(1011).followed_users.to_a
+    follows_ids = follows.map{ |x| x.id }
+    results = Set.new
+
+    follows_ids.each do |u_id|
+      t = Tweet.where("user_id = ?", u_id).order('created_at').limit(100).to_a
+      t.each do |tweet|
+        results.add(tweet)
+      end
+    end
+    @userTweets = results.to_a.reverse
+    erb :homepage
+end
+
 get '/reset' do
 	if (Tweet.where(user_id: 1011).destroy_all) && (FollowConnection.where(user_id: 1011).destroy_all)
 		"reset test user's stuff"
