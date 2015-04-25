@@ -38,3 +38,11 @@ get '/reset' do
 		"error resetting"
 	end
 end
+
+get '/refresh' do
+	tweets = Tweet.order('created_at').limit(100).to_a
+	tweets.each do |twt|
+		addToQueue(twt)
+	end
+	"refreshed queue"
+end
