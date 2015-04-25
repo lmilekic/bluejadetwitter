@@ -1,57 +1,66 @@
 <div class="container">
 	<div class="row">
-		<div class="col-md-5">
+		<div class="col-md-7 col-md-offset-1">
 			<h2 class="text-muted">Tweets</h2>
 			<div class="panel panel-primary">
 				<div class="panel-body">
 
-				  <% count = 0 %>
-				  <% @tweet_results.each do |t| %>
+					<% if @tweet_results.size == 0 %>
+						<h4 class="text-muted">Your search was fruitless; no tweets were found. :(</h4>
+					<% else %>
+						<% count = 0 %>
+						<% @tweet_results.each do |t| %>
 
-					  <div class="media">
-					    <div class="media-left">
-					      <a href="#"> 
-					        <img class="media-object" src='/pngs/<%= count %>.png' height="50">
-					      </a>
-					    </div>
-					    <div class="media-body">
-					      <h4 class="media-heading">
-					        <% user = User.find(t.user_id).username %> 
-					        <a href="/user/<%= user %>"><%= user %></a>
-					        <small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
-					      </h4>
-					      <%= t.text %>
-					    </div>
-					  </div>
-				  <% count = count+1 %>
-				  <% end %>
+							<div class="media">
+								<div class="media-left">
+									<a href="#"> 
+										<img class="media-object" src='/pngs/<%= count %>.png' height="50">
+									</a>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">
+										<% user = User.find(t.user_id).username %> 
+										<a href="/user/<%= user %>"><%= user %></a>
+										<small><%= t.created_at.strftime("%a %e, %l:%M%P") %></small>
+									</h4>
+									<%= t.text %>
+								</div>
+							</div>
+						<% count = count + 1 %>
+						<% end %>
+					<% end %>
 
 				</div>
 			</div>
 		</div>
 
-		<div class="col-md-5">
+		<div class="col-md-3">
 			<h2 class="text-muted">Users</h2>
-			<div class="panel-body">
+			<div class="panel panel-primary">
+				<div class="panel-body">
 
-				<% count = 0 %>
-				<% @user_results.each do |user| %>
-				  <div class="media">
-				    <div class="media-left">
-				      <a href="#"> 
-				        <img class="media-object" src='/pngs/<%= count %>.png' height="50">
-				      </a>
-				    </div>
-				    <div class="media-body">
-				      <h4 class="media-heading">
-				      	<% username = User.find(user.id).username %>
-				        <a href="/user/<%= "#{username}" %>"><%= "#{username}" %></a>
-				      </h4>
-				        <small>joined <%= user.created_at.strftime("%a %e, %l:%M%P") %></small>
-				    </div>
-				  </div>
-				<% count = count+1 %>
-				<% end %>
+					<% if @user_results.size == 0 %>
+						<h4 class="text-muted">Looks like there's nobody with that username! :/</h4>
+					<% else %>
+						<% count = 0 %>
+						<% @user_results.each do |user| %>
+							<div class="media">
+								<div class="media-left">
+									<a href="#"> 
+										<img class="media-object" src='/pngs/<%= count %>.png' height="50">
+									</a>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">
+										<% username = User.find(user.id).username %>
+										<a href="/user/<%= "#{username}" %>"><%= "#{username}" %></a>
+									</h4>
+										<small>joined <%= user.created_at.strftime("%a %e, %l:%M%P") %></small>
+								</div>
+							</div>
+						<% count = count + 1 %>
+						<% end %>
+					<% end %>
 
 				</div>
 			</div>
