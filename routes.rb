@@ -5,7 +5,7 @@ get '/' do
     results = Set.new
 
     follows_ids.each do |u_id|
-      t = Tweet.where("user_id = ?", u_id).order('created_at').limit(100).to_a
+      t = Tweet.where("user_id = ?", f).order('created_at').last(100/follows_ids.size).to_a
       t.each do |tweet|
         results.add(tweet)
       end
