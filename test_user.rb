@@ -42,7 +42,7 @@ end
 get '/refresh' do
 	tweets = Tweet.order('created_at').limit(100).to_a
 	tweets.each do |twt|
-		addToQueue(twt)
+		addToQueue(Tweet.create(:text => twt.text, :user_id => twt.user_id, :created_at => twt.created_at))
 	end
 	"refreshed queue"
 end
