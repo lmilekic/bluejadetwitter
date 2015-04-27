@@ -15,20 +15,21 @@ get '/test_tweet' do
 end
 
 get '/test_follow' do
-	id = Random.rand(User.count)
-	if (FollowConnection.exists?(user_id: 1002, followed_user_id: id))
-		if (FollowConnection.where(:user_id => 1002, :followed_user_id => id).destroy_all)
-			"unfollowed #{id}"
-		else
-			"unfollow error with #{id}"
-		end
-	else
-		if (FollowConnection.create(:user_id => 1002, :followed_user_id => id))
-			"follow relation created with #{id}"
-		else
-			"follow error with #{id}"
-		end
-	end
+#	id = Random.rand(User.count)
+#	if (FollowConnection.exists?(user_id: 1002, followed_user_id: id))
+#		if (FollowConnection.where(:user_id => 1002, :followed_user_id => id).destroy_all)
+#			"unfollowed #{id}"
+#		else
+#			"unfollow error with #{id}"
+#		end
+#	else
+#		if (FollowConnection.create(:user_id => 1002, :followed_user_id => id))
+#			"follow relation created with #{id}"
+#		else
+#			"follow error with #{id}"
+#		end
+#	end
+"not yet implemented"
 end
 
 get '/test_user' do
