@@ -48,6 +48,16 @@
 
           </div>
 
+
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="panel panel-primary">
+
+          <div class="panel-title panel-heading">
+            <h3 class="panel-title">Tweets</h3>
+          </div>
           <% if @self %>
           <div class="panel-footer">
             <form action="/tweet" method="POST">
@@ -64,16 +74,6 @@
             </form>
           </div>
           <% end %>
-
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="panel panel-primary">
-
-          <div class="panel-title panel-heading">
-            <h3 class="panel-title">Tweets</h3>
-          </div>
 
           <div class="panel-body">
             <% if(@profileFeed.size != 0) %>
