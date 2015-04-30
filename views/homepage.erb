@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="Calvin Wang">
     <link rel="icon" href="../../favicon.ico"> 
-    <title>bluejade</title>
+    <title>BlueJade</title>
   </head>
 
   <body>
@@ -17,28 +17,24 @@
     <div class="container">
 
         <div class="row marketing">
-          <div class="col-md-4">
+          <div class="col-md-4 col-md-offset-1">
             <div class="panel panel-primary">
-
-              <div class="panel-title panel-heading">
-                    header image
-              </div>
 
               <div class="panel-body">
 
                 <div class="media">
                   <div class="media-left">
                     <a href="#">
-                      <img class="media-object" src="/pngs/1.png" width="100">
+                      <img class="media-object" src="/pngs/<%=Random.rand(101)%>.png" width="100">
                     </a>
                   </div>
                   <div class="media-body">
                     <a href="/user/<%= session[:username] %>">
                       <h3 class="media-heading"><%= session[:username] %></h3>
                     </a>
-                    num tweets<br>
-                    num followers<br>
-                    num following<br>
+                    <%= Tweet.where(user_id: session[:id]).count %> tweets<br>
+                    <%= FollowConnection.where(followed_user_id: session[:id]).count - 1 %> followers<br>
+                    <%= FollowConnection.where(user_id: session[:id]).count %> following<br>
                   </div>
                 </div>
 
@@ -53,7 +49,7 @@
                 <form action="/tweet" method="POST">
                   <div class="input-group">
                     <div class="input-group-addon">
-                      <img src="/pngs/1.png" height="20">
+                      <img src="/pngs/<%=Random.rand(101)%>.png" height="20">
                     </div>
                     
                     <input type="text" name="tweet_text" placeholder="What is up in the hizzle?" class="form-control">
@@ -72,7 +68,7 @@
                     <div class="media">
                       <div class="media-left">
                         <a href="#"> 
-                          <img class="media-object" src='/pngs/3.png' height="50">
+                          <img class="media-object" src='/pngs/<%=Random.rand(101)%>.png' height="50">
                         </a>
                       </div>
                       <div class="media-body">
@@ -91,13 +87,12 @@
               </div>
             </div>
           </div>
-
+          <!--
           <div class="col-md-2">
             <h4 class="text-muted"><center>recommended users for you</center></h4>
             <div class="panel panel-primary">
               <div class="panel-body">
 
-                <!-- replace relevant parts with some for loops with recommended users -->
                 <div class="media">
                   <div class="media-left media-middle">
                     <a href="#"> 
@@ -111,12 +106,12 @@
                     this can be the intersection of who the ppl u follow follow
                   </div>
                 </div>
-                <!-- -->
+                
 
               </div>
             </div>
           </div>
-
+          -->
         </div>
 
       </div>

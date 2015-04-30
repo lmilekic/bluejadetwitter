@@ -9,40 +9,22 @@
   <meta name="description" content="">
   <meta name="author" content="Calvin Wang">
   <link rel="icon" href="../../favicon.ico">
-  <title><%= @username %> on bluejade</title>
+  <title><%= @username %> on BlueJade</title>
 </head>
 
 <body>
 
   <div class="container">
 
-    <div class="jumbotron">
-      a nice header image
-    </div>
-    <% if(!@self && @current_user) %>
-    <% if(@current_user.followed_users.include?(@other_user)) %>
-    <form action="/unfollow" accept-charset="UTF-8" method="post">
-      <input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
-      <input type="submit" name="toggle-follow" value="Unfollow!" />
-    </form>
-    <% else %>
-    <form action="/follow" accept-charset="UTF-8" method="post">
-      <input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
-      <input type="submit" name="toggle-follow" value="Follow!" />
-    </form>
-    <% end %>	<br></br>
-    <% end %>
-
     <div class="row marketing">
-      <div class="col-md-4">
+      <div class="col-md-4 col-md-offset-1">
         <div class="panel panel-default">
           <div class="panel-title panel-heading">
-            <img src="/pngs/1.png" width="325">
+            <img src="/pngs/<%=Random.rand(101)%>.png" width="325">
           </div>
           <div class="panel-body">
 
             <h3><%= @username %></h3>
-            short blurb<br>
             Joined on
             <%= User.where(:username => @username)[0].created_at.strftime("%B %e, %Y") %>
 
@@ -72,7 +54,31 @@
         <div class="panel panel-primary">
 
           <div class="panel-title panel-heading">
-            <h3 class="panel-title">Tweets</h3>
+
+            <% if(!@self && @current_user) %>
+              <% if(@current_user.followed_users.include?(@other_user)) %>
+                <form action="/unfollow" method="post">
+                  <div class="input-group">
+                    Tweets
+                    <input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
+                    <span class="input-group-btn">
+                      <input type="submit" name="toggle-follow" value="Unfollow" class="btn btn-default"/>
+                    </span>
+                  </div>
+                </form>
+              <% else %>
+                <form action="/follow" method="post">
+                  <div class="input-group">
+                    Tweets
+                    <input type="hidden" name="other_user_id" value="<%=@other_user.id%>">
+                    <span class="input-group-btn">
+                      <input type="submit" name="toggle-follow" value="Follow" class="btn btn-default"/>
+                    </span>
+                  </div>
+                </form>
+              <% end %>
+            <% end %>
+
           </div>
 
           <div class="panel-body">
@@ -81,7 +87,7 @@
               <div class="media">
                 <div class="media-left">
                   <a href="#">
-                    <img class="media-object" src='/pngs/3.png' height="50">
+                    <img class="media-object" src='/pngs/<%=Random.rand(101)%>.png' height="50">
                   </a>
                 </div>
                 <div class="media-body">
@@ -101,12 +107,13 @@
         </div>
       </div>
 
+<!--
+
       <div class="col-md-2">
         <h4 class="text-muted"><center>Following</center></h4>
         <div class="panel panel-primary">
           <div class="panel-body">
 
-            <!-- replace relevant parts with some for loops with users -->
             <div class="media">
               <div class="media-left media-middle">
                 <a href="#">
@@ -120,7 +127,6 @@
                 list 10 or something
               </div>
             </div>
-            <!-- -->
 
           </div>
         </div>
@@ -129,7 +135,6 @@
         <div class="panel panel-primary">
           <div class="panel-body">
 
-            <!-- replace relevant parts with some for loops with users -->
             <div class="media">
               <div class="media-left media-middle">
                 <a href="#">
@@ -143,11 +148,10 @@
                 list 10 or something
               </div>
             </div>
-            <!-- -->
 
           </div>
         </div>
-
+-->
       </div>
 
     </div>

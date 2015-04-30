@@ -8,13 +8,12 @@
 					<% if @tweet_results.size == 0 %>
 						<h4 class="text-muted">Your search was fruitless; no tweets were found. :(</h4>
 					<% else %>
-						<% count = 0 %>
 						<% @tweet_results.each do |t| %>
 
 							<div class="media">
 								<div class="media-left">
 									<a href="#"> 
-										<img class="media-object" src='/pngs/<%= count %>.png' height="50">
+										<img class="media-object" src='/pngs/<%=Random.rand(101)%>.png' height="50">
 									</a>
 								</div>
 								<div class="media-body">
@@ -26,7 +25,6 @@
 									<%= t.text %>
 								</div>
 							</div>
-						<% count = count + 1 %>
 						<% end %>
 					<% end %>
 
@@ -42,12 +40,11 @@
 					<% if @user_results.size == 0 %>
 						<h4 class="text-muted">Looks like there's nobody with that username! :/</h4>
 					<% else %>
-						<% count = 0 %>
 						<% @user_results.each do |user| %>
 							<div class="media">
 								<div class="media-left">
 									<a href="#"> 
-										<img class="media-object" src='/pngs/<%= count %>.png' height="50">
+										<img class="media-object" src='/pngs/<%=Random.rand(101)%>.png' height="50">
 									</a>
 								</div>
 								<div class="media-body">
@@ -58,7 +55,6 @@
 										<small>joined <%= user.created_at.strftime("%a %e, %l:%M%P") %></small>
 								</div>
 							</div>
-						<% count = count + 1 %>
 						<% end %>
 					<% end %>
 

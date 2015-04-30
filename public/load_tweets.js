@@ -9,7 +9,7 @@ $(document).ready(function(){
         '<div class="media">' +
           '<div class="media-left">' +
             '<a href="#">' +
-              '<img class="media-object" src="/pngs/'+i+'.png" height="50">' +
+              '<img class="media-object" src="/pngs/'+(Math.floor(Math.random()*100))+'.png" height="50">' +
             '</a>' +
           '</div>' +
           '<div class="media-body">' +

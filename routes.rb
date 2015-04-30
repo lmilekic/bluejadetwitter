@@ -2,7 +2,8 @@ get '/' do
   if (current_user)
     follows = current_user.followed_users.to_a
     follows_ids = follows.map{ |x| x.id }
-
+    follows_ids.push(session[:id])
+    
     @userTweets = Tweet.where("user_id IN (?)", follows_ids).order('created_at').last(100).to_a
     erb :homepage
   else
