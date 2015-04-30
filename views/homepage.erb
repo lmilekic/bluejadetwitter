@@ -33,7 +33,7 @@
                       <h3 class="media-heading"><%= session[:username] %></h3>
                     </a>
                     <%= Tweet.where(user_id: session[:id]).count %> tweets<br>
-                    <%= FollowConnection.where(followed_user_id: session[:id]).count - 1 %> followers<br>
+                    <%= FollowConnection.where(followed_user_id: session[:id]).count %> followers<br>
                     <%= FollowConnection.where(user_id: session[:id]).count %> following<br>
                   </div>
                 </div>
