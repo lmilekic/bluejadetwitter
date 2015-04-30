@@ -6,7 +6,6 @@ post '/user/register' do
   if user.save
     session[:id] = user.id
     session[:username] = user.username
-    FollowConnection.create(:user_id => current_user.id, :followed_user_id => current_user.id)
     redirect '/user/' + user.username
   else
     flash[:error] = "username or email is already taken"
