@@ -51,7 +51,7 @@ get '/reset' do
 end
 
 get '/refresh' do
-	tweets = Tweet.order('created_at').limit(100).to_a
+	tweets = Tweet.order('created_at').last(100).to_a
 	tweets.each do |twt|
 		tmp = Tweet.create(:text => twt.text, :user_id => twt.user_id, :created_at => twt.created_at)
 		tweet_hash = tmp.serializable_hash
