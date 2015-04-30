@@ -36,12 +36,12 @@ get '/test_user' do
     follows_ids = follows.map{ |x| x.id }
     results = Set.new
 
-    follows_ids.each do |u_id|
-      t = Tweet.where("user_id = ?", u_id).order('created_at').last(100/follows_ids.size).to_a
-      t.each do |tweet|
-        results.add(tweet)
-      end
+    t = Tweet.where("user_id IN (?)", follows_ids).order('created_at').last(100).to_a
+
+    t.each do |tw|
+      results.add(tw)
     end
+    
     @userTweets = results.to_a.reverse
     erb :homepage
 end
